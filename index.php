@@ -9,28 +9,23 @@ Description: A fast theme configuration API that looks for a config.json file in
 require_once 'theme_supports.php';
 require_once 'enqueue.php'; // Register/Enqueue Scripts & Stylesheets
 
-// Setup the global var to hold the config object
-add_action('after_setup_theme', function() {
-
-	$basset_theme_config_paths = apply_filters('basset/config_paths', array(get_stylesheet_directory() . '/config.json'));
-	$GLOBALS['basset_theme_config_paths'] = $basset_theme_config_paths;
-
-	foreach($basset_theme_config_paths as $path) {
-		basset_config($path);
-	}
-});
-
 function basset_config($file) {
 
 	$config = '';
 
 	if (file_exists($file)) {
 		$contents = file_get_contents($file);
-		if ($data = json_decode($contents)) {
+		$data = json_decode($contents);
+		if (!is_null($data)) {
 			// Kick off config tasks
 			do_action('basset/theme_config', $data, $file);
+			// add data to cache
+			update_option('basset_config/last_json', $data);
 		} else {
-			return new WP_Error( 'broke', __( "Couldn't Decode as JSON", "basset" ) );
+			// json couldn't decode. check the cache
+			// @TODO: This would be a good spot to report something to the browser to let the developer know something broke.
+			$data = get_option('basset_config/last_json');
+			do_action('basset/theme_config', $data, $file);
 		}
 	} else {
 		return new WP_Error( 'no-file', __( "File Doesn't Exist", "basset" ) );
@@ -65,18 +60,27 @@ add_action('basset/theme_config', function($config, $file) {
 }, 0, 2);
 
 
-// Original config file
+// NOT LONGER USED - Original config file
+/*
 function basset_get_theme_config() {
 	global $basset_theme_config;
 
 	if (empty($basset_theme_config)) {
 		if (file_exists($basset_theme_config_path)) {
 			$contents = file_get_contents($basset_theme_config_path);
-			$basset_theme_config = apply_filters('basset/theme_config/init', json_decode($contents));
+			if ($contents) {
+				if ($json = json_decode($contents)) {
+					$basset_theme_config = apply_filters('basset/theme_config/init', $json);
+					// cache theme config
+				} else {
+					// JSON couldn't decode, check the last cache instead
+				}
+			}
 		}
 	}
 	return $basset_theme_config;
 }
+*/
 
 // Add Meta Tags To <head>
 add_action('basset/theme_config/meta_tags', function($config, $file) {
@@ -121,15 +125,15 @@ add_action('basset/theme_config/nav_menus', function($config, $file) {
 	}
 }, 10, 2);
 
+// Add config admin menu item
+add_action( 'wp_before_admin_bar_render', function() {
+	global $wp_admin_bar, $template;
 
-// Setup Customizer Fields
-/*
-add_action('customize_register', function($wp_customize) {
-
-	$config = basset_get_theme_config();
-
-	// loop over customizer config and setup fields.
-
+	$args = array(
+		'id'     => 'basset_config',
+		'title'  => __( 'Configuration', 'basset' ),
+		'meta'   => array(),
+	);
+	//$wp_admin_bar->add_menu( $args );
 });
-*/
 ?>
