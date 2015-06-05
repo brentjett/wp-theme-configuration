@@ -6,12 +6,24 @@ Author: Brent Jett
 Description: A fast theme configuration API that looks for a config.json file in specified directories and initializes your WordPress theme.
 */
 
-require_once 'theme_supports.php';
-require_once 'enqueue.php'; // Register/Enqueue Scripts & Stylesheets
+require_once 'theme_supports.php'; // Handle adding theme support features
+require_once 'enqueue.php'; // Handle Register/Enqueue Scripts & Stylesheets
+
+// On Init, Get Paths and configure.
+add_action('init', function() {
+	$paths = apply_filters('config/paths', array()); // Get all paths to look for config files in.
+
+	if (!empty($paths)) {
+		foreach($paths as $path) {
+			basset_config($path);
+		}
+	} else {
+		// No Paths Were Returned
+	}
+});
 
 function basset_config($file) {
-
-	$config = '';
+	global $basset;
 
 	if (file_exists($file)) {
 		$contents = file_get_contents($file);
@@ -23,19 +35,24 @@ function basset_config($file) {
 			update_option('basset_config/last_json', $data);
 		} else {
 			// json couldn't decode. check the cache
-			// @TODO: This would be a good spot to report something to the browser to let the developer know something broke.
+			$basset ? $basset->add_issue("JSON couldn't decode. Check Syntax.") : null ;
 			$data = get_option('basset_config/last_json');
 			do_action('basset/theme_config', $data, $file);
 		}
 	} else {
-		return new WP_Error( 'no-file', __( "File Doesn't Exist", "basset" ) );
+		// File doesn't exist. @TODO: Report non-failing error.
 	}
-
-	return $config;
 }
 
-// Setup config tasks
+// Use Object to setup config tasks
 add_action('basset/theme_config', function($config, $file) {
+
+	if ($config) {
+		foreach($config as $key => $value) {
+			//do_action('basset/theme_config/theme_supports', $config, $file);
+		}
+	}
+
 
 	do_action('basset/theme_config/theme_supports', $config, $file);
 	// add image sizes
@@ -43,6 +60,7 @@ add_action('basset/theme_config', function($config, $file) {
 	// register sidebars
 	// register custom post types
 	// register custom taxonomies
+
 
 	add_action('wp_enqueue_scripts', function() use ($config, $file) {
 		// Enqueue/Register stylesheets and scripts
@@ -59,28 +77,6 @@ add_action('basset/theme_config', function($config, $file) {
 
 }, 0, 2);
 
-
-// NOT LONGER USED - Original config file
-/*
-function basset_get_theme_config() {
-	global $basset_theme_config;
-
-	if (empty($basset_theme_config)) {
-		if (file_exists($basset_theme_config_path)) {
-			$contents = file_get_contents($basset_theme_config_path);
-			if ($contents) {
-				if ($json = json_decode($contents)) {
-					$basset_theme_config = apply_filters('basset/theme_config/init', $json);
-					// cache theme config
-				} else {
-					// JSON couldn't decode, check the last cache instead
-				}
-			}
-		}
-	}
-	return $basset_theme_config;
-}
-*/
 
 // Add Meta Tags To <head>
 add_action('basset/theme_config/meta_tags', function($config, $file) {
