@@ -1,28 +1,35 @@
 <?php
-add_action('basset/theme_config/styles', function($config, $file) {
+function basset_setup_library_enqueues($config, $file) {
 
-    if (!empty($config->register_styles)) {
-        foreach($config->register_styles as $handle => $style) {
-            basset_enqueue('register', 'style', $handle, $style);
+    add_action('wp_enqueue_scripts', function() use ($config, $file) {
+        if (!empty($config->register_styles)) {
+            foreach($config->register_styles as $handle => $style) {
+                basset_enqueue('register', 'style', $handle, $style);
+            }
         }
-    }
-    if (!empty($config->enqueue_styles)) {
-        foreach($config->enqueue_styles as $handle => $style) {
-            basset_enqueue('enqueue', 'style', $handle, $style);
+        if (!empty($config->enqueue_styles)) {
+            foreach($config->enqueue_styles as $handle => $style) {
+                basset_enqueue('enqueue', 'style', $handle, $style);
+            }
         }
-    }
-    if (!empty($config->register_scripts)) {
-        foreach($config->register_scripts as $handle => $script) {
-            basset_enqueue('register', 'script', $handle, $script);
+        if (!empty($config->register_scripts)) {
+            foreach($config->register_scripts as $handle => $script) {
+                basset_enqueue('register', 'script', $handle, $script);
+            }
         }
-    }
-    if (!empty($config->enqueue_scripts)) {
-        foreach($config->enqueue_scripts as $handle => $script) {
-            basset_enqueue('enqueue', 'script', $handle, $script);
+        if (!empty($config->enqueue_scripts)) {
+            foreach($config->enqueue_scripts as $handle => $script) {
+                basset_enqueue('enqueue', 'script', $handle, $script);
+            }
         }
-    }
+    });
 
-}, 10, 2);
+}
+add_action('basset/theme_config/register_styles', 'basset_setup_library_enqueues', 10, 2);
+add_action('basset/theme_config/enqueue_styles', 'basset_setup_library_enqueues', 10, 2);
+add_action('basset/theme_config/register_scripts', 'basset_setup_library_enqueues', 10, 2);
+add_action('basset/theme_config/enqueue_scripts', 'basset_setup_library_enqueues', 10, 2);
+
 
 function basset_enqueue($action = "enqueue", $type = 'style', $handle, $data = null) {
 
@@ -35,11 +42,6 @@ function basset_enqueue($action = "enqueue", $type = 'style', $handle, $data = n
             if (!$active) return;
         }
     }
-
-    // wp_register_style( $handle, $src, $deps, $ver, $media );
-    // wp_enqueue_style( $handle, $src, $deps, $ver, $media );
-    // wp_enqueue_script( $handle, $src, $deps, $ver, $in_footer );
-    // wp_register_script( $handle, $src, $deps, $ver, $in_footer );
 
     if (!$path = $data->path) return;
 
@@ -57,16 +59,30 @@ function basset_enqueue($action = "enqueue", $type = 'style', $handle, $data = n
         }
     }
 
-    if (!$dependancies = $data->dependancies) {
+    if (!isset($data->dependancies)) {
         $dependancies = array();
+    } else {
+        $dependancies = $data->dependancies;
     }
 
-    $version = $data->version;
+    if (isset($data->version)) {
+        $version = $data->version;
+    } else {
+        $version = false;
+    }
 
     if ($type == 'style') {
-        $media_footer = $data->media;
+        if (isset($data->media)) {
+            $media_footer = $data->media;
+        } else {
+            $media_footer = false;
+        }
     } else {
-        $media_footer = $data->in_footer;
+        if (isset($data->in_footer)) {
+            $media_footer = $data->in_footer;
+        } else {
+            $media_footer = false;
+        }
     }
 
     $function_name = "wp_" . $action . "_" . $type;
@@ -87,7 +103,9 @@ add_action('basset/theme_config/editor_styles', function($config, $file) {
 
 function basset_path_is_external($path) {
     $path_data = parse_url($path);
-    if ($path_data['scheme'] == 'http' || $path_data['scheme'] == 'https') return true; // Scheme supports http or https, not //
+    if (isset($path_data['scheme'])) {
+        if ($path_data['scheme'] == 'http' || $path_data['scheme'] == 'https') return true; // Scheme supports http or https, not //
+    }
     return false;
 }
 ?>

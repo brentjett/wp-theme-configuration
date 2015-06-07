@@ -28,9 +28,10 @@ function basset_config($file) {
 	if (file_exists($file)) {
 		$contents = file_get_contents($file);
 		$data = json_decode($contents);
-		if (!is_null($data)) {
+		if (isset($data)) {
 			// Kick off config tasks
 			do_action('basset/theme_config', $data, $file);
+			$basset ? $basset->config_data = $data : null;
 			// add data to cache
 			update_option('basset_config/last_json', $data);
 		} else {
@@ -41,6 +42,7 @@ function basset_config($file) {
 		}
 	} else {
 		// File doesn't exist. @TODO: Report error.
+		$basset ? $basset->add_issue("Config file doesn't exist at path") : null ;
 	}
 }
 

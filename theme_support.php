@@ -21,7 +21,6 @@ add_action('basset/theme_config/theme_support', function($config, $file) {
 
 			$supports = $theme_supports->html5;
 			add_theme_support('html5', $supports);
-			//foreach($supports as $support) { print "added support for $support\n"; }
 		}
 
 		// Automatic Feed Links
