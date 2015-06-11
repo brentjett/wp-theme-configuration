@@ -25,5 +25,5 @@ In a config.json file this would simply be:
 }
 ```
 
-It's much simpler and much easier to read. Also, it's labeled. Since the config file is your theme, lets just assume that's the directory we're going to start looking in. It's easy to see that depandancies has an array of other stylesheet references, and now we know what that "screen" is for, media. This means we can come back to our theme in 6 months and know exactly what's happening without having to remember.
+It's much simpler and much easier to read. Also, it's labeled. Since the config file is in the root of your theme, lets just assume that's the directory we're going to start looking in. It's easy to see that depandancies has an array of other stylesheet references, and now we know what that "screen" is for, media. This means we can come back to our theme in 6 months and know exactly what's happening without having to remember.
 
