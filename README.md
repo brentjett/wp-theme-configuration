@@ -11,7 +11,7 @@ add_action('wp_enqueue_scripts', function() {
 });
 ```
 
-Not only is this verbose, but that's the short version if you simply want to include your style.css file. It's even longer if you're including a file from a deeper directory, and you have to remember the different between get_stylesheet_uri(), get_stylesheet_directory_uri() and get_template_directory_uri() to even begin your path properly. This should be simply.
+Not only is this verbose, but that's the short version if you simply want to include your style.css file. It's even longer if you're including a file from a deeper directory, and you have to remember the difference between get_stylesheet_uri(), get_stylesheet_directory_uri() and get_template_directory_uri() to even begin your path properly. This should be simply.
 
 In a config.json file this would simply be:
 
@@ -19,7 +19,7 @@ In a config.json file this would simply be:
 "enqueue_styles" : {
     "my-stylesheet" : {
         "path" : "style.css", 
-        "dependancies" : ["open-sans"]
+        "dependancies" : ["open-sans"],
         "media" : "screen"
     }
 }
