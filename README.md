@@ -62,7 +62,7 @@ Because the system loops over the properties of the JSON object and calls a corr
 Once you've specified your custom property on the JSON object, you can define a filter in PHP to handle it.
 
 ```php
-add_filter('basset/theme_config/meta_tags', function($data, $file_path) {
+add_filter('basset/theme_config/my_custom_property', function($data, $file_path) {
     
     // Do some code here to handle the $data object. We also pass the file path in case you need to inspect that file or determin which file it is before performing the configuration.
 
