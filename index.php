@@ -11,7 +11,7 @@ require_once 'enqueue.php'; // Handle Register/Enqueue Scripts & Stylesheets
 
 // On Init, Get Paths and configure.
 add_action('init', function() {
-	$paths = apply_filters('basset/theme_config/paths', array()); // Get all paths to look for config files in.
+	$paths = apply_filters('wp_config/paths', array()); // Get all paths to look for config files in.
 
 	if (!empty($paths)) {
 		foreach($paths as $path) {
@@ -20,6 +20,11 @@ add_action('init', function() {
 	} else {
 		// No Paths Were Returned
 	}
+});
+
+add_filter('wp_config/paths', function($paths) {
+	$paths = array(get_stylesheet_directory() . '/config.json');
+	return $paths;
 });
 
 function wp_json_config($file) {
@@ -102,9 +107,4 @@ add_action('basset/theme_config/nav_menus', function($config, $file) {
 		}
 	}
 }, 10, 2);
-
-
-function basset_print_action() {
-	return;
-}
 ?>

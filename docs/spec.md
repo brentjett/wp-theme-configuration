@@ -33,11 +33,18 @@ Anything declared with add_theme_support() can be added through the API. Custom/
 ```
 
 ### Stylesheets & Scripts
-Stylesheets and scripts can be registered and/or enqueued using the API.
+Stylesheets and scripts can be registered and/or enqueued using the API. This matches very closely to the [wp_enqueue_script()](https://codex.wordpress.org/Function_Reference/wp_enqueue_script) and [wp_enqueue_style()](https://codex.wordpress.org/Function_Reference/wp_enqueue_style) functions.
 
 ```JSON
 {
-
+    "enqueue_styles" : {
+        "main" : {
+            "path" : "style.css",
+            "dependencies" : ["dashicons"],
+            "version" : false,
+            "media" : "screen"
+        }
+    },
 }
 ```
 
@@ -50,3 +57,12 @@ Adding nav menu locations is very simple. The key is the menu handle and the val
     "footer" : "Footer Menu"
 }
 ```
+
+### Sidebars (Planned)
+### Custom Post Types (Planned)
+### Custom Taxonomies (Planned)
+
+### Register Widgets (Planned)
+### Register Shortcodes (Planned)
+
+### Customizer API (Planned)
