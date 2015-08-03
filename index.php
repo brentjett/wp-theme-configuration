@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WP Theme Configuration API
-Version: 0.8
+Version: 0.9
 Author: Brent Jett
 Description: A fast theme configuration API that looks for a config.json file in specified directories and initializes your WordPress theme.
 */
@@ -15,14 +15,14 @@ add_action('init', function() {
 
 	if (!empty($paths)) {
 		foreach($paths as $path) {
-			basset_config($path);
+			wp_json_config($path);
 		}
 	} else {
 		// No Paths Were Returned
 	}
 });
 
-function basset_config($file) {
+function wp_json_config($file) {
 	global $basset;
 
 	if (file_exists($file)) {
@@ -55,36 +55,11 @@ add_action('basset/theme_config', function($config, $file) {
 		}
 	}
 
-
-	//do_action('basset/theme_config/theme_supports', $config, $file);
-	// add image sizes
-	//do_action('basset/theme_config/nav_menus', $config, $file);
-	// register sidebars
-	// register custom post types
-	// register custom taxonomies
-
-	/*
-	add_action('wp_enqueue_scripts', function() use ($config, $file) {
-		// Enqueue/Register stylesheets and scripts
-		do_action('basset/theme_config/styles', $config, $file);
-	}, 10, 2);
-
-	add_action('admin_init', function() use ($config, $file) {
-		do_action('basset/theme_config/editor_styles', $config, $file);
-	});
-
-	add_action('wp_head', function() use($config, $file) {
-		do_action('basset/theme_config/meta_tags', $config, $file);
-	}, 10, 2);
-	*/
-
 }, 0, 2);
 
 
 // Add Meta Tags To <head>
 add_action('basset/theme_config/meta_tags', function($config, $file) {
-
-	basset_print_action();
 
 	if (!empty($config->meta_tags)) {
 		add_action('wp_head', function() use($config, $file) {
@@ -113,15 +88,13 @@ add_action('basset/theme_config/meta_tags', function($config, $file) {
 				print "<meta " . $name . $charset . $http_equiv . $content . ">\n";
 			}
 
-			print "<!-- End Basset Enqueued Meta Tags -->\n\n";
+			print "<!-- End Enqueued Meta Tags -->\n\n";
 		});
 	}
 }, 10, 2);
 
 // Setup Nav Menu Locations
 add_action('basset/theme_config/nav_menus', function($config, $file) {
-
-	basset_print_action();
 
 	if (!empty($config->nav_menus)) {
 		foreach($config->nav_menus as $handle => $label) {
@@ -130,8 +103,8 @@ add_action('basset/theme_config/nav_menus', function($config, $file) {
 	}
 }, 10, 2);
 
+
 function basset_print_action() {
-	//print "Test: Show current filter";
 	return;
 }
 ?>

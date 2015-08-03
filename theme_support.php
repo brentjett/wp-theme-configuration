@@ -2,14 +2,11 @@
 
 add_action('basset/theme_config/theme_support', function($config, $file) {
 
-	basset_print_action();
 
 	$theme_supports = $config->theme_support;
 	if (!isset($theme_supports)) return;
 
 	add_action('after_setup_theme', function() use ($theme_supports, $config, $file) {
-
-		basset_print_action();
 
 		// Add Title Tag Support
 		if (isset($theme_supports->title_tag)) {
