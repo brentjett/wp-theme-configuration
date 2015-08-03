@@ -1,3 +1,34 @@
 {
-    
+    "theme_support" : {
+        "title_tag" : true,
+        "html5" : [
+			"comment-list",
+			"comment-form",
+			"search-form",
+			"gallery",
+			"caption"
+		],
+        "automatic_feed_links" : true,
+        "post_thumbnails" : true
+    },
+    "nav_menus" : {
+		"header" : "Header Menu",
+		"footer" : "Footer Menu"
+	},
+	"meta_tags" : {
+		"chars" : {
+			"charset" : "UTF-8"
+		},
+		"ie-compat" : {
+			"content" : "IE=edge",
+			"http-equiv" : "X-UA-Compatible"
+		},
+		"viewport" : "width=device-width, initial-scale=1.0",
+		"referrer" : "always"
+	},
+    "editor_styles" : {
+        "content" : {
+            "path" : "libraries/content.less"
+        }
+    }
 }
