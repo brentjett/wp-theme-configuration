@@ -47,7 +47,11 @@ Stylesheets and scripts can be registered and/or enqueued using the API. This ma
     },
     "register_styles" : {},
     "enqueue_scripts" : {
-
+        "app" : {
+            "path" : "js/app.js",
+            "dependencies" : ["jquery"],
+            "in_footer" : false
+        }
     },
     "register_scripts" : {},
     "editor_styles" : {
