@@ -43,6 +43,10 @@ Stylesheets and scripts can be registered and/or enqueued using the API. This ma
             "dependencies" : ["dashicons"],
             "version" : false,
             "media" : "screen"
+        },
+        "homepage" : {
+            "path" : "css/home.css",
+            "active_callback" : "is_front_page"
         }
     },
     "register_styles" : {},
