@@ -45,6 +45,16 @@ Stylesheets and scripts can be registered and/or enqueued using the API. This ma
             "media" : "screen"
         }
     },
+    "register_styles" : {},
+    "enqueue_scripts" : {
+
+    },
+    "register_scripts" : {},
+    "editor_styles" : {
+        "content" : {
+            "path" : "css/content.css"
+        }
+    }
 }
 ```
 
@@ -90,3 +100,22 @@ Sidebars can be declared exactly like the array passed to [register_sidebar()](h
 ### Register Shortcodes (Planned)
 
 ### Customizer API (Planned)
+
+### Meta Tags (Testing, Non-WP API)
+Meta tags is an example of how an arbitrary or non-wordpress handler might do some custom configuration. This handler takes data and prints the appropriate <meta> tag in the wp_head() call. I've including this because meta tags are the only thing that are not possible to enqueue in the wp_head() call at present. Stylesheets, scripts, and the title tag have all been incorporated into core API.
+
+```json
+{
+    "meta_tags" : {
+		"chars" : {
+			"charset" : "UTF-8"
+		},
+		"ie-compat" : {
+			"content" : "IE=edge",
+			"http-equiv" : "X-UA-Compatible"
+		},
+		"viewport" : "width=device-width, initial-scale=1.0",
+		"referrer" : "always"
+	}
+}
+```
