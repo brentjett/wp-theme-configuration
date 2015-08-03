@@ -39,7 +39,7 @@ Stylesheets and scripts can be registered and/or enqueued using the API.
 ```
 
 ### Nav Menu Locations (In Testing)
-Adding nav menu locations is very simple. The key is the menu handle and the value is the label, just like the locations array passed to (register_nav_menus())[https://codex.wordpress.org/Function_Reference/register_nav_menus]
+Adding nav menu locations is very simple. The key is the menu handle and the value is the label, just like the locations array passed to [register_nav_menus()](https://codex.wordpress.org/Function_Reference/register_nav_menus)
 
 ```JSON
 "nav_menus" : {
