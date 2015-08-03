@@ -1,8 +1,10 @@
 # Declarative Theme Configuration API for WordPress
 
-You shouldn't need to write programmatic code to configure a theme. Logical programming is for just that...logic. Also it's extremely prone to simple mistakes like missing semicolons at the end of lines or mismatched quotation marks. Instead, the vast majority of theme configuration is simply declared, without any conditions, and this plugin/library is designed to make that faster. 
+You shouldn't need to write programmatic code to configure a theme. Logical programming is for just that...logic. Also it's extremely prone to simple mistakes like missing semicolons at the end of lines or mismatched quotation marks. Instead, the vast majority of theme configuration is simply declared, without any conditions, and this plugin/library is designed to make that faster.
 
 The plugin takes a path to a .json file with configuration data and passes each section of that data through a series of filters that do the work of configuring WordPress. This means you can simply write JSON to setup your theme supports, enqueue scripts and stylesheets, declare nav menu locations, etc...
+
+See [SPEC for support details](docs/spec.md)
 
 Example: This is how you typically enqueue a stylesheet, most likely in your functions.php file.
 ```php
@@ -21,7 +23,7 @@ In a config.json file this would simply be:
 {
     "enqueue_styles" : {
         "my-stylesheet" : {
-            "path" : "style.css", 
+            "path" : "style.css",
             "dependancies" : ["open-sans"],
             "media" : "screen"
         }
@@ -33,7 +35,7 @@ It's much simpler and much easier to read. Also, it's labeled. Since the config 
 
 ## Configuration
 
-This API takes an array of paths to json files, converts them to objects, and loops over their properties to configure. To give the system one or more paths, use the basset/theme_config/paths filter. 
+This API takes an array of paths to json files, converts them to objects, and loops over their properties to configure. To give the system one or more paths, use the basset/theme_config/paths filter.
 
 ```php
 add_filter('basset/theme_config/paths', function($paths) {
@@ -65,7 +67,7 @@ Once you've specified your custom property on the JSON object, you can define a 
 
 ```php
 add_filter('basset/theme_config/my_custom_property', function($data, $file_path) {
-    
+
     // Do some code here to handle the $data object. We also pass the file path in case you need to inspect that file or determin which file it is before performing the configuration.
 
 }, 10, 2);
