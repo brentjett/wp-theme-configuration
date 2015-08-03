@@ -1,4 +1,4 @@
-# Spec (WORKING)
+# Spec - DRAFT
 
 The API is designed to intake one or more JSON files and process their contents.
 
