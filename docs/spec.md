@@ -1,6 +1,9 @@
 # Spec - DRAFT
 
-The API is designed to intake one or more JSON files and process their contents.
+The API is designed to intake one or more JSON files and process their contents. The process is divided into 3 main parts:
+* Locating the files
+* Importing each file's data & handling misformatted data (fallback to cached last successful import)
+* Loop over contents and allow filters to handle configuration.
 
 ## Premises
 1. There may be multiple config files with a variety of settings inside. Some idea of priority must be established to deal with duplicate settings.
