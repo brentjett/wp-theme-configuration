@@ -1,6 +1,8 @@
-# Declarative Theme Configuration API
+# Declarative Theme Configuration API for WordPress
 
-You shouldn't need to write programmatic code to configure a theme. Logical programming is for just that...logic. Also it's extremely prone to simple mistakes like missing semicolons at the end of lines or mismatched quotation marks. Instead, the vast majority of theme configuration is simply declared, without any conditions, and this library is designed to make that faster. The library takes a path to a .json file with configuration data and passes each section of that data through a series of configuration filters. This means you can simply write JSON to setup your theme supports, enqueue scripts and stylesheets, declare nav menu locations, and a lot more.
+You shouldn't need to write programmatic code to configure a theme. Logical programming is for just that...logic. Also it's extremely prone to simple mistakes like missing semicolons at the end of lines or mismatched quotation marks. Instead, the vast majority of theme configuration is simply declared, without any conditions, and this plugin/library is designed to make that faster. 
+
+The plugin takes a path to a .json file with configuration data and passes each section of that data through a series of filters that do the work of configuring WordPress. This means you can simply write JSON to setup your theme supports, enqueue scripts and stylesheets, declare nav menu locations, etc...
 
 Example: This is how you typically enqueue a stylesheet, most likely in your functions.php file.
 ```php
@@ -69,4 +71,4 @@ add_filter('basset/theme_config/my_custom_property', function($data, $file_path)
 }, 10, 2);
 ```
 
-That's all.
+That's all for now.
