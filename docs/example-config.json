@@ -2,11 +2,11 @@
     "theme_support" : {
         "title_tag" : true,
         "html5" : [
-			"comment-list",
-			"comment-form",
-			"search-form",
-			"gallery",
-			"caption"
+            "comment-list",
+            "comment-form",
+            "search-form",
+            "gallery",
+            "caption"
 		],
         "automatic_feed_links" : true,
         "post_thumbnails" : true
