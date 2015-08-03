@@ -113,7 +113,83 @@ Sidebars can be declared exactly like the array passed to [register_sidebar()](h
 ### Custom Taxonomies (Planned)
 
 ### Register Widgets (Planned)
+Registering a widget only requires passing an array of WP_Widget subclasses you'd like to be registered.
+```json
+{
+    "widgets" : [
+        "BRJ_CallToActionWidget",
+        "BRJ_AuthorBioWidget"
+    ]
+}
+```
 ### Register Shortcodes (Planned)
+Generic shortcodes are simply a shortcode name, specified as the handle, or optionally with the tag property, but with the new Shortcake UI plugin under consideration for core inclusion, we can declare the fields as well.
+
+```json
+{
+    "shortcodes" : {
+        "brj_action" : {
+            "tag" : "brj_action",
+            "callback" : "brj_print_action_shortcode"
+        },
+        "brj_quote" : {
+            "callback" : "brj_print_quote_shortcode",
+            "label" : "BIG Quote",
+            "listItemImage" : "dashicons-editor-insertmore",
+            "inner_content" : {
+                "label" : "Content"
+            },
+            "attrs" : [
+                {
+                    "label" : "Link To",
+                    "attr" : "link_url",
+                    "type" : "url",
+                },
+                {
+                    "label" : "Additional Styles",
+                    "attr" : "style",
+                    "type" : "text",
+                },
+            ]
+
+        }
+    }
+}
+```
+
+$shortcode_details = array(
+    'label' => 'Inline Call-to-Action',
+    'listItemImage' => 'dashicons-editor-insertmore',
+    'inner_content' => array(
+        'label' => 'Content'
+    ),
+    'attrs' => array(
+        array(
+            'label' => 'Link',
+            'attr'  => 'link_url',
+            'type'  => 'url',
+            'meta' => array(
+                'size' => '80'
+            )
+        ),
+        array(
+            'label' => 'CSS',
+            'attr'  => 'style',
+            'type'  => 'text',
+            'meta' => array(
+                'size' => '120'
+            )
+        ),
+        array(
+            'label' => 'Classes',
+            'attr'  => 'class',
+            'type'  => 'text',
+            'meta' => array(
+                'size' => '80'
+            )
+        )
+    )
+);
 
 ### Customizer API (Planned)
 
