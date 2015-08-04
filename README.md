@@ -38,7 +38,7 @@ It's much simpler and much easier to read. Also, it's labeled. Since the config 
 This API takes an array of paths to json files, converts them to objects, and loops over their properties to configure. To give the system one or more paths, use the basset/theme_config/paths filter.
 
 ```php
-add_filter('basset/theme_config/paths', function($paths) {
+add_filter('wp_config/paths', function($paths) {
 
     $paths[] = "path/to/my/config.json";
     return $paths;
