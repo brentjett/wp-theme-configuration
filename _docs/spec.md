@@ -182,7 +182,6 @@ Generic shortcodes are simply a shortcode name and a callback function that retu
                     "type" : "text",
                 },
             ]
-
         }
     }
 }
