@@ -109,11 +109,42 @@ Sidebars can be declared exactly like the array passed to [register_sidebar()](h
 }
 ```
 
-### Custom Post Types (Planned)
-### Custom Taxonomies (Planned)
+### Custom Post Types & Taxonomies (Planned)
+Custom post types are two of the more complex objects to declare in WordPress. The JSON API will attempt to be as faithful to the existing API as possible to avoid confusion.
+```json
+{
+    "post_types" : {
+        "brj-review" : {
+            "label" : "Customer Reviews",
+            "labels" : {},
+            "description" : "A review made by a customer",
+            "public" : true,
+            "exclude_from_search" : false,
+            "publicly_queryable" : true,
+            "show_ui" : true,
+            "show_in_nav_menus" : true,
+            "show_in_menu" : true
+        }
+    },
+    "taxonomy" : {
+        "handle" : "service",
+        "object_types" : ["brj-review", "post"],
+        "labels" : {
+            "name" : "Services",
+            "singular_name" : "Service"
+        },
+        "hierarchical" : true,
+        "show_ui" : true,
+        "show_admin_column" : true,
+        "query_var" : true,
+        "rewrite" : ["slug", ""]
+    }
+}
+```
+There are many more properties than this. See the [full API](https://codex.wordpress.org/Function_Reference/register_post_type) for all keys.
 
 ### Register Widgets (Planned)
-Registering a widget only requires passing an array of WP_Widget subclasses you'd like to be registered.
+Registering a widget only requires passing an array of WP_Widget subclasses you'd like to be registered. This API might be extended to allow widget fields to be specified here as well.
 ```json
 {
     "widgets" : [
@@ -123,7 +154,7 @@ Registering a widget only requires passing an array of WP_Widget subclasses you'
 }
 ```
 ### Register Shortcodes (Planned)
-Generic shortcodes are simply a shortcode name, specified as the handle, or optionally with the tag property, but with the new Shortcake UI plugin under consideration for core inclusion, we can declare the fields as well.
+Generic shortcodes are simply a shortcode name and a callback function that returns the output, but with the new Shortcake UI plugin under consideration for core inclusion, we can declare the labels and fields as well.
 
 ```json
 {
@@ -193,7 +224,13 @@ $shortcode_details = array(
 
 ### Customizer API (Planned)
 
-### Meta Tags (Testing, Non-WP API)
+### Actions & Filters (Planned)
+
+### Admin Pages & Settings (Planned)
+### Admin Dashboard Widgets (Planned)
+### Metaboxes
+
+### Meta Tags (Testing, Experimental Non-WordPress API)
 Meta tags is an example of how an arbitrary or non-wordpress handler might do some custom configuration. This handler takes data and prints the appropriate <meta> tag in the wp_head() call. I've including this because meta tags are the only thing that are not possible to enqueue in the wp_head() call at present. Stylesheets, scripts, and the title tag have all been incorporated into core API.
 
 ```json
