@@ -1,4 +1,4 @@
-# Declarative Theme Configuration API for WordPress
+# Declarative Theme Configuration API for WordPress [IN DEVELOPMENT]
 
 You shouldn't need to write programmatic code to configure a theme. Logical programming is for just that...logic. Also it's extremely prone to simple mistakes like missing semicolons at the end of lines or mismatched quotation marks. Instead, the vast majority of theme configuration is simply declared, without any conditions, and this plugin/library is designed to make that faster.
 
@@ -39,7 +39,6 @@ This API takes an array of paths to json files, converts them to objects, and lo
 
 ```php
 add_filter('wp_config/paths', function($paths) {
-
     $paths[] = "path/to/my/config.json";
     return $paths;
 });
