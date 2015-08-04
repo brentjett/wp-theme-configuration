@@ -15,17 +15,17 @@
 		"header" : "Header Menu",
 		"footer" : "Footer Menu"
 	},
-	"meta_tags" : {
-		"chars" : {
-			"charset" : "UTF-8"
-		},
-		"ie-compat" : {
-			"content" : "IE=edge",
-			"http-equiv" : "X-UA-Compatible"
-		},
-		"viewport" : "width=device-width, initial-scale=1.0",
-		"referrer" : "always"
-	},
+    "meta_tags" : {
+    	"chars" : {
+    		"charset" : "UTF-8"
+    	},
+    	"ie-compat" : {
+    		"content" : "IE=edge",
+    		"http-equiv" : "X-UA-Compatible"
+    	},
+    	"viewport" : "width=device-width, initial-scale=1.0",
+    	"referrer" : "always"
+    },
     "editor_styles" : {
         "content" : {
             "path" : "libraries/content.less"
