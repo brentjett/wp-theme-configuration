@@ -226,3 +226,87 @@ Meta tags is an example of how an arbitrary or non-wordpress handler might do so
 	}
 }
 ```
+
+### Proposed Fields API (Experimental)
+This is a quick & dirty version of what a JSON wrapper for the proposed(in-dev) Fields API might look like. This has the potential to ultimately replace multiple API like Admin page settings, customizer, post metaboxes, and add new outlets like users and taxonomies. Maybe I'll even be able to convince someone that nav menu items need custom fields :O!
+
+Nested fields don't need to declare their section or panel in their properties. That can be inferred from structure. In addition to declaring new objects, you can also reference previously declared objects (like blogname) and modify their properties (like transport).
+
+```json
+"fields" : {
+    "customizer" : [
+        {
+            "type" : "section",
+            "handle" : "mytheme_options",
+            "title" : "MyTheme Options",
+            "priority" : 35,
+            "capability" : "edit_theme_options",
+            "description" : "Allows you to customize some example settings for MyTheme.",
+            "fields" : [
+                {
+                    "handle" : "link_textcolor",
+                    "default" : "#2BA6CB",
+                    "type" : "theme_mod",
+                    "capability" : "edit_theme_options",
+                    "transport" : "postMessage",
+                    "control" : {
+                        "id" : "mytheme_link_textcolor",
+                        "label" : "Link Color",
+                        "priority" : 10,
+                        "type" : "color"
+                    }
+                }
+            ]
+        },
+        {
+            "type" : "field",
+            "handle" : "blogname",
+            "transport" : "postMessage"
+        },
+        {
+            "type" : "field",
+            "handle" : "blogdescription",
+            "transport" : "postMessage"
+        },
+        {
+            "type" : "field",
+            "handle" : "header_textcolor",
+            "transport" : "postMessage"
+        },
+        {
+            "type" : "field",
+            "handle" : "background_color",
+            "transport" : "postMessage"
+        },
+    ],
+    "user" : [
+        {
+            "type" : "section",
+            "handle" : "mytheme_user_social_fields",
+            "title" : "Social Fields",
+            "fields" : [
+                {
+                    "handle" : "twitter",
+                    "control" : {
+                        "id" : "mytheme_user_twitter",
+                        "label" : "Twitter Username",
+                        "type" : "text"
+                    }
+                },
+                {
+                    "handle" : "google_plus",
+                    "control" : {
+                        "id" : "mytheme_user_google_plus",
+                        "label" : "Google+ Profile URL",
+                        "type" : "text"
+                    }
+                }
+            ]
+        }
+    ],
+    "settings" : [
+        
+    ]
+}
+```
+For details on this project, [check out the repo](https://github.com/sc0ttkclark/wordpress-fields-api).
