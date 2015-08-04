@@ -44,7 +44,7 @@ It's much simpler and much easier to read. Also, it's labeled. Since the config 
 
 ## Configuration
 
-This API takes an array of paths to json files, converts them to objects, and loops over their properties to configure. To give the system one or more paths, use the basset/theme_config/paths filter.
+This API takes an array of paths to json files or paths to directories to look for "config.json" files inside. It converts them to objects, and loops over their properties to configure. To give the system one or more paths, use the wp_config/paths filter. By default it looks for "config.json" inside the active theme's root.
 
 ```php
 add_filter('wp_config/paths', function($paths) {
