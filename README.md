@@ -4,9 +4,18 @@ You shouldn't need to write programmatic code to configure a theme. Logical prog
 
 The plugin takes a path to a .json file with configuration data and passes each section of that data through a series of filters that do the work of configuring WordPress. This means you can simply write JSON to setup your theme supports, enqueue scripts and stylesheets, declare nav menu locations, etc...
 
-See [SPEC for support details](docs/spec.md)
+See [Spec for support details](docs/spec.md)
 
-Example: This is how you typically enqueue a stylesheet, most likely in your functions.php file.
+## Benefits
+A declarative syntax for configuration has several benefits to the themer:
+* Offers a clear way to see exactly what is taking place inside a theme. The more information stored inside a config file, the better understanding someone can have when approaching a theme they've never worked with.
+* Relieves the burden of needing to understand the WordPress event model. Themers no longer need to be aware that stylesheets are enqueued on wp_enqueue_scripts and theme supports are declared inside after_setup_theme. The API can handle declaring things at the proper event.
+* In addition to being a very human and machine readable format, JSON is also an easily writable format. This enables config data to be created through a user interface and written to the appropriate place. Writing well-formed PHP files is a lot more clumsy and prone to hackery.
+* JSON files move with the theme. Unlike information stored in the database (theme_mods, options), config data stored inside the theme itself will travel with that theme whenever it is moved (staging to production, downloaded by end user) without having to create an export -> import migration process.
+
+## Example
+
+This is how you typically enqueue a stylesheet, most likely in your functions.php file.
 ```php
 add_action('wp_enqueue_scripts', function() {
 
