@@ -230,7 +230,7 @@ Meta tags is an example of how an arbitrary or non-wordpress handler might do so
 ### Proposed Fields API (Experimental)
 This is a quick & dirty version of what a JSON wrapper for the proposed(in-dev) Fields API might look like. This has the potential to ultimately replace multiple API like Admin page settings, customizer, post metaboxes, and add new outlets like users and taxonomies. Maybe I'll even be able to convince someone that nav menu items need custom fields :O!
 
-Nested fields don't need to declare their section or panel in their properties. That can be inferred from structure. In addition to declaring new objects, you can also reference previously declared objects (like blogname) and modify their properties (like transport).
+Nested fields don't need to declare their section or panel in their properties. Parent/Child relationships can be inferred from structure. Settings like capabilities can be inherited as well. In addition to declaring new objects, you can also reference previously declared objects (like blogname) and modify their properties (like transport).
 
 ```json
 "fields" : {
@@ -305,7 +305,51 @@ Nested fields don't need to declare their section or panel in their properties. 
         }
     ],
     "settings" : [
-        
+        {
+            "type" : "screen",
+            "handle" : "mytheme_settings_sharing",
+            "title" : "Sharing",
+            "page_title" : "MyTheme Sharing.",
+            "capability" : "manage_options",
+            "sections" : [
+                {
+                    "handle" : "mytheme_setting_sharing",
+                    "title" : "Sharing",
+                    "fields" : [
+                        {
+                            "handle" : "mytheme_sharing_buttons",
+                            "default" : 1,
+                            "control" : {
+                                "label" : "Google+ Profile URL",
+                                "description" : "This will show sharing buttons below blog posts on singular templates",
+                                "type" : "checkbox"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "posts" :[ /* Confusing? */
+        {
+            "type" : "section",
+            "handle" : "my_meta_box",
+            "object_name" : "my_cpt",
+            "title" : "My Meta Box",
+            "priority" : "high",
+            "context" : "side",
+            "capability" : "my_custom_capability",
+            "fields" : [
+                {
+                    "handle" : "my_custom_field",
+                    "default" : "All about that post",
+                    "control" : {
+                        "label" : "My Custom Field",
+                        "type" : "text"
+                    }
+                }
+            ]
+        }
     ]
 }
 ```
