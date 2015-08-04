@@ -12,8 +12,8 @@
         "post_thumbnails" : true
     },
     "nav_menus" : {
-		"header" : "Header Menu",
-		"footer" : "Footer Menu"
+        "header" : "Header Menu",
+        "footer" : "Footer Menu"
 	},
     "meta_tags" : {
     	"chars" : {
@@ -28,7 +28,7 @@
     },
     "editor_styles" : {
         "content" : {
-            "path" : "libraries/content.less"
+            "path" : "libraries/content.css"
         }
     }
 }
