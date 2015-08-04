@@ -189,6 +189,7 @@ Generic shortcodes are simply a shortcode name and a callback function that retu
 ```
 
 ### Customizer API (Planned)
+Customizer Settings, Panels, Sections, and Controls should certainly be declarable. I'm debating the syntax a little because its possible to have sections without panels and I'd rather not have to include a class name with every object. The API should mimic the PHP API closely.
 
 ### Actions & Filters (Planned)
 For the sake of completeness, I've planned the ability to declare action and filter functions. This is more useful as an explainer so that it's easy to see how the theme is connected moreso than helpful functionality. You'd still have to define the function in PHP.
