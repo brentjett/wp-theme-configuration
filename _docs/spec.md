@@ -353,3 +353,34 @@ Nested fields don't need to declare their section or panel in their properties. 
 }
 ```
 For details on this project, [check out the repo](https://github.com/sc0ttkclark/wordpress-fields-api).
+
+
+### Theme Metadata (Pondering)
+This is more of a dream than API because it requires core to make it possible. Moving the theme declaration metadata from the style.css file into the config file would offer an easier way to modify the information from the UI in the future. Allowing the optional use of style.css OR the config file to declare a theme would also allow themes that do not use style.css for actual css to lose the file entirely.
+
+```json
+{
+    "theme" : {
+        "name" : "My Super Theme",
+        "description" : "This is a config file (that should be) in the root of a super cool theme.",
+        "version" : 1.0,
+        "uri" : "http://wordpress.org/themes/brentsupercooltheme",
+        "author" : "Brent",
+        "license" : "GNU General Public License v2 or later",
+        "license_uri" : "http://www.gnu.org/licenses/gpl-2.0.html",
+        "tags" : ["super", "cool", "theme"],
+        "releases" : [
+            {
+                "version" : 1.0,
+                "date" : "2015-08-03",
+                "description" : "Here's the latest and greatest version",
+                "changelog" : [
+                    "FIXED - That weird thing that kept happening",
+                    "FIXED - That thing you said happened but I could never reproduce"
+                ]
+            }
+        ]
+
+    }
+}
+```
