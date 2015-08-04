@@ -188,43 +188,20 @@ Generic shortcodes are simply a shortcode name and a callback function that retu
 }
 ```
 
-$shortcode_details = array(
-    'label' => 'Inline Call-to-Action',
-    'listItemImage' => 'dashicons-editor-insertmore',
-    'inner_content' => array(
-        'label' => 'Content'
-    ),
-    'attrs' => array(
-        array(
-            'label' => 'Link',
-            'attr'  => 'link_url',
-            'type'  => 'url',
-            'meta' => array(
-                'size' => '80'
-            )
-        ),
-        array(
-            'label' => 'CSS',
-            'attr'  => 'style',
-            'type'  => 'text',
-            'meta' => array(
-                'size' => '120'
-            )
-        ),
-        array(
-            'label' => 'Classes',
-            'attr'  => 'class',
-            'type'  => 'text',
-            'meta' => array(
-                'size' => '80'
-            )
-        )
-    )
-);
-
 ### Customizer API (Planned)
 
 ### Actions & Filters (Planned)
+For the sake of completeness, I've planned the ability to declare action and filter functions. This is more useful as an explainer so that it's easy to see how the theme is connected moreso than helpful functionality. You'd still have to define the function in PHP.
+```json
+{
+    "actions" : {
+        "after_setup_theme" : ["brj_run_my_theme_setup"]
+    },
+    "filters" : {
+        "the_content" : [ "brj_mangle_the_content" ]
+    }
+}
+```
 
 ### Admin Pages & Settings (Planned)
 ### Admin Dashboard Widgets (Planned)
