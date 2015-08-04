@@ -330,7 +330,7 @@ Nested fields don't need to declare their section or panel in their properties. 
             ]
         }
     ],
-    "posts" :[ /* Confusing? */
+    "posts" :[
         {
             "type" : "section",
             "handle" : "my_meta_box",
