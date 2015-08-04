@@ -188,7 +188,7 @@ Generic shortcodes are simply a shortcode name and a callback function that retu
 ```
 
 ### Customizer API (Planned)
-Customizer Settings, Panels, Sections, and Controls should certainly be declarable. I'm debating the syntax a little because its possible to have sections without panels and I'd rather not have to include a class name with every object. The API should mimic the PHP API closely.
+Customizer Settings, Panels, Sections, and Controls should certainly be declarable. There are a lot of changes taking place in this API at the moment regarding javascript templating and partial dom refresh, so I don't feel it's ready to be defined quite yet.
 
 ### Actions & Filters (Planned)
 For the sake of completeness, I've planned the ability to declare action and filter functions. This is more useful as an explainer so that it's easy to see how the theme is connected moreso than helpful functionality. You'd still have to define the function in PHP.
@@ -354,9 +354,8 @@ Nested fields don't need to declare their section or panel in their properties. 
 ```
 For details on this project, [check out the repo](https://github.com/sc0ttkclark/wordpress-fields-api).
 
-
-### Theme Metadata (Pondering)
-This is more of a dream than API because it requires core to make it possible. Moving the theme declaration metadata from the style.css file into the config file would offer an easier way to modify the information from the UI in the future. Allowing the optional use of style.css OR the config file to declare a theme would also allow themes that do not use style.css for actual css to lose the file entirely.
+## Theme Declaration Metadata
+This is just something I'm pondering but can't actually do anything beyond documentation without a core change.
 
 ```json
 {
