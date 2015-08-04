@@ -1,6 +1,6 @@
 <?php
 
-add_action('basset/theme_config/theme_support', function($config, $file) {
+add_action('wp_config/theme_support', function($config, $file) {
 
 
 	$theme_supports = $config->theme_support;

@@ -28,35 +28,32 @@ add_filter('wp_config/paths', function($paths) {
 });
 
 function wp_json_config($file) {
-	global $basset;
 
 	if (file_exists($file)) {
 		$contents = file_get_contents($file);
 		$data = json_decode($contents);
+
 		if (isset($data)) {
 			// Kick off config tasks
-			do_action('basset/theme_config', $data, $file);
-			$basset ? $basset->config_data = $data : null;
+			do_action('wp_config', $data, $file);
 			// add data to cache
-			update_option('basset_config/last_json', $data);
+			update_option('wp_config/last_json', $data);
 		} else {
 			// json couldn't decode. check the cache
-			$basset ? $basset->add_issue("JSON couldn't decode. Check Syntax.") : null ;
-			$data = get_option('basset_config/last_json');
-			do_action('basset/theme_config', $data, $file);
+			$data = get_option('wp_config/last_json');
+			do_action('wp_config', $data, $file);
 		}
 	} else {
 		// File doesn't exist. @TODO: Report error.
-		$basset ? $basset->add_issue("Config file doesn't exist at path") : null ;
 	}
 }
 
 // Use Object to setup config tasks
-add_action('basset/theme_config', function($config, $file) {
+add_action('wp_config', function($config, $file) {
 
 	if (!empty($config)) {
 		foreach($config as $key => $value) {
-			do_action("basset/theme_config/{$key}", $config, $file);
+			do_action("wp_config/{$key}", $config, $file);
 		}
 	}
 
@@ -64,7 +61,7 @@ add_action('basset/theme_config', function($config, $file) {
 
 
 // Add Meta Tags To <head>
-add_action('basset/theme_config/meta_tags', function($config, $file) {
+add_action('wp_config/meta_tags', function($config, $file) {
 
 	if (!empty($config->meta_tags)) {
 		add_action('wp_head', function() use($config, $file) {
@@ -99,7 +96,7 @@ add_action('basset/theme_config/meta_tags', function($config, $file) {
 }, 10, 2);
 
 // Setup Nav Menu Locations
-add_action('basset/theme_config/nav_menus', function($config, $file) {
+add_action('wp_config/nav_menus', function($config, $file) {
 
 	if (!empty($config->nav_menus)) {
 		foreach($config->nav_menus as $handle => $label) {

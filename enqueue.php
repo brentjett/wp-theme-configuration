@@ -1,37 +1,37 @@
 <?php
-function basset_setup_library_enqueues($config, $file) {
+function wp_config_setup_library_enqueues($config, $file) {
 
     add_action('wp_enqueue_scripts', function() use ($config, $file) {
         if (!empty($config->register_styles)) {
             foreach($config->register_styles as $handle => $style) {
-                basset_enqueue('register', 'style', $handle, $style);
+                wp_config_enqueue('register', 'style', $handle, $style);
             }
         }
         if (!empty($config->enqueue_styles)) {
             foreach($config->enqueue_styles as $handle => $style) {
-                basset_enqueue('enqueue', 'style', $handle, $style);
+                wp_config_enqueue('enqueue', 'style', $handle, $style);
             }
         }
         if (!empty($config->register_scripts)) {
             foreach($config->register_scripts as $handle => $script) {
-                basset_enqueue('register', 'script', $handle, $script);
+                wp_config_enqueue('register', 'script', $handle, $script);
             }
         }
         if (!empty($config->enqueue_scripts)) {
             foreach($config->enqueue_scripts as $handle => $script) {
-                basset_enqueue('enqueue', 'script', $handle, $script);
+                wp_config_enqueue('enqueue', 'script', $handle, $script);
             }
         }
     });
 
 }
-add_action('basset/theme_config/register_styles', 'basset_setup_library_enqueues', 10, 2);
-add_action('basset/theme_config/enqueue_styles', 'basset_setup_library_enqueues', 10, 2);
-add_action('basset/theme_config/register_scripts', 'basset_setup_library_enqueues', 10, 2);
-add_action('basset/theme_config/enqueue_scripts', 'basset_setup_library_enqueues', 10, 2);
+add_action('wp_config/register_styles', 'wp_config_setup_library_enqueues', 10, 2);
+add_action('wp_config/enqueue_styles', 'wp_config_setup_library_enqueues', 10, 2);
+add_action('wp_config/register_scripts', 'wp_config_setup_library_enqueues', 10, 2);
+add_action('wp_config/enqueue_scripts', 'wp_config_setup_library_enqueues', 10, 2);
 
 
-function basset_enqueue($action = "enqueue", $type = 'style', $handle, $data = null) {
+function wp_config_enqueue($action = "enqueue", $type = 'style', $handle, $data = null) {
 
     // run conditional callback
     if (!empty($data->active_callback)) {
@@ -45,7 +45,7 @@ function basset_enqueue($action = "enqueue", $type = 'style', $handle, $data = n
 
     if (!$path = $data->path) return;
 
-    if (!basset_path_is_external($data->path)) {
+    if (!wp_config_path_is_external($data->path)) {
 
         $path = get_stylesheet_directory_uri() . '/' . $data->path;
 
@@ -92,7 +92,7 @@ function basset_enqueue($action = "enqueue", $type = 'style', $handle, $data = n
 }
 
 // Enqueue editor stylesheets
-add_action('basset/theme_config/editor_styles', function($config, $file) {
+add_action('wp_config/editor_styles', function($config, $file) {
     $styles = $config->editor_styles;
     if (!empty($styles)) {
         foreach($styles as $style) {
@@ -101,7 +101,7 @@ add_action('basset/theme_config/editor_styles', function($config, $file) {
     }
 }, 10, 2);
 
-function basset_path_is_external($path) {
+function wp_config_path_is_external($path) {
     $path_data = parse_url($path);
     if (isset($path_data['scheme'])) {
         if ($path_data['scheme'] == 'http' || $path_data['scheme'] == 'https') return true; // Scheme supports http or https, not //
