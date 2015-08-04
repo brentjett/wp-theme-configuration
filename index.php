@@ -8,17 +8,21 @@ Description: A fast theme configuration API that looks for a config.json file in
 
 require_once 'theme_support.php'; // Handle adding theme support features
 require_once 'enqueue.php'; // Handle Register/Enqueue Scripts & Stylesheets
+require_once 'admin/tools-config.php'; // Testing admin page
 
 // On Init, Get Paths and configure.
 add_action('init', function() {
 	$paths = apply_filters('wp_config/paths', array()); // Get all paths to look for config files in.
-
 	if (!empty($paths)) {
 		foreach($paths as $path) {
+
+			/*
+			@TODO: Test full paths vs. directories. If it's a directory, look for config.json files inside.
+			*/
+
+			// init configuration
 			wp_json_config($path);
 		}
-	} else {
-		// No Paths Were Returned
 	}
 });
 
@@ -38,14 +42,18 @@ function wp_json_config($file) {
 			do_action('wp_config', $data, $file);
 			// add data to cache
 			update_option('wp_config/last_json', $data);
+			return $data;
 		} else {
 			// json couldn't decode. check the cache
 			$data = get_option('wp_config/last_json');
 			do_action('wp_config', $data, $file);
+			return $data;
 		}
 	} else {
 		// File doesn't exist. @TODO: Report error.
+		return false;
 	}
+	return;
 }
 
 // Use Object to setup config tasks

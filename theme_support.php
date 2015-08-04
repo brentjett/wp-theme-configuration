@@ -2,7 +2,6 @@
 
 add_action('wp_config/theme_support', function($config, $file) {
 
-
 	$theme_supports = $config->theme_support;
 	if (!isset($theme_supports)) return;
 
