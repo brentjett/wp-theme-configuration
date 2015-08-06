@@ -1,4 +1,18 @@
 <?php
+
+class WP_Config_Enqueue_Handler {
+
+    function __construct() {
+        add_action('wp_enqueue_scripts', array($this, 'configure'));
+    }
+
+    // runs on wp_enqueue_scripts
+    function configure() {
+
+    }
+
+}
+
 function wp_config_setup_library_enqueues($config, $file) {
 
     add_action('wp_enqueue_scripts', function() use ($config, $file) {
@@ -104,7 +118,8 @@ add_action('wp_config/editor_styles', function($config, $file) {
 function wp_config_path_is_external($path) {
     $path_data = parse_url($path);
     if (isset($path_data['scheme'])) {
-        if ($path_data['scheme'] == 'http' || $path_data['scheme'] == 'https') return true; // Scheme supports http or https, not //
+        if ($path_data['scheme'] == 'http' || $path_data['scheme'] == 'https') return true;
+        // Scheme supports http or https, not //
     }
     return false;
 }
