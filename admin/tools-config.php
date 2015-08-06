@@ -1,4 +1,7 @@
 <?php
+/*
+NOT IN use
+
 add_action('admin_menu', function() {
     add_management_page( 'JSON Config', 'JSON Config', 'manage_options', 'brj-wp-config-tests', 'wp_config_print_tests_page' );
 });
@@ -38,4 +41,5 @@ function wp_config_print_tests_page() {
     </div>
 <?php
 }
+*/
 ?>

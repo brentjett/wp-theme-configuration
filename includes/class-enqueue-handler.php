@@ -1,14 +1,42 @@
 <?php
-
+/**
+* Setup Stylesheet & Script Queuing.
+*/
 class WP_Config_Enqueue_Handler {
 
     function __construct() {
-        add_action('wp_enqueue_scripts', array($this, 'configure'));
+        add_action('wp_config/register_styles', 'wp_config_setup_library_enqueues', 10, 2);
+        add_action('wp_config/enqueue_styles', 'wp_config_setup_library_enqueues', 10, 2);
+        add_action('wp_config/register_scripts', 'wp_config_setup_library_enqueues', 10, 2);
+        add_action('wp_config/enqueue_scripts', 'wp_config_setup_library_enqueues', 10, 2);
+
+        add_action('wp_config/editor_styles', array($this, "enqueue_editor_stylesheets"), 10, 2);
+
+        //add_action('wp_enqueue_scripts', array($this, 'configure'));
     }
 
     // runs on wp_enqueue_scripts
     function configure() {
 
+    }
+
+    // Enqueue editor stylesheets
+    function enqueue_editor_stylesheets($config, $file) {
+        $styles = $config->editor_styles;
+        if (!empty($styles)) {
+            foreach($styles as $style) {
+                add_editor_style($style);
+            }
+        }
+    }, 10, 2);
+
+    function is_path_external($path) {
+        $path_data = parse_url($path);
+        if (isset($path_data['scheme'])) {
+            if ($path_data['scheme'] == 'http' || $path_data['scheme'] == 'https') return true;
+            // Scheme supports http or https, not //
+        }
+        return false;
     }
 
 }
@@ -39,10 +67,6 @@ function wp_config_setup_library_enqueues($config, $file) {
     });
 
 }
-add_action('wp_config/register_styles', 'wp_config_setup_library_enqueues', 10, 2);
-add_action('wp_config/enqueue_styles', 'wp_config_setup_library_enqueues', 10, 2);
-add_action('wp_config/register_scripts', 'wp_config_setup_library_enqueues', 10, 2);
-add_action('wp_config/enqueue_scripts', 'wp_config_setup_library_enqueues', 10, 2);
 
 
 function wp_config_enqueue($action = "enqueue", $type = 'style', $handle, $data = null) {
@@ -103,24 +127,5 @@ function wp_config_enqueue($action = "enqueue", $type = 'style', $handle, $data 
     if (is_callable($function_name)) {
         call_user_func($function_name, $handle, $path, $dependancies, $version, $media_footer);
     }
-}
-
-// Enqueue editor stylesheets
-add_action('wp_config/editor_styles', function($config, $file) {
-    $styles = $config->editor_styles;
-    if (!empty($styles)) {
-        foreach($styles as $style) {
-            add_editor_style($style);
-        }
-    }
-}, 10, 2);
-
-function wp_config_path_is_external($path) {
-    $path_data = parse_url($path);
-    if (isset($path_data['scheme'])) {
-        if ($path_data['scheme'] == 'http' || $path_data['scheme'] == 'https') return true;
-        // Scheme supports http or https, not //
-    }
-    return false;
 }
 ?>
