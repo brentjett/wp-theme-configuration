@@ -11,14 +11,24 @@ License: GPL v2 or later
 
 define( 'WP_CONFIG_API_DIR', dirname( __FILE__ ));
 
-require_once WP_CONFIG_API_DIR . 'includes/class-wp-config-manager.php';
-require_once WP_CONFIG_API_DIR . 'includes/class-enqueue-handler.php';
-require_once WP_CONFIG_API_DIR . 'includes/class-theme-support-handler.php';
-require_once WP_CONFIG_API_DIR . 'includes/class-meta-tags-handler.php';
+require_once WP_CONFIG_API_DIR . '/includes/class-wp-config-manager.php';
+require_once WP_CONFIG_API_DIR . '/includes/class-enqueue-handler.php';
+require_once WP_CONFIG_API_DIR . '/includes/class-theme-support-handler.php';
+require_once WP_CONFIG_API_DIR . '/includes/class-meta-tags-handler.php';
 
 // On Init, Setup Manager Object.
 function wp_config_init() {
 	$GLOBALS['wp_config_manager'] = new WP_Config_Manager;
 }
 add_action('init', 'wp_config_init');
+
+// tests
+add_filter('the_content', function() {
+	global $wp_config_manager;
+
+	print "<pre>";
+	print_r($wp_config_manager);
+	print "</pre>";
+
+});
 ?>

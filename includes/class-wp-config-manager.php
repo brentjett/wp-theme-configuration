@@ -43,16 +43,22 @@ class WP_Config_Manager {
     */
     function init_handlers() {
 
-        $this->handlers["enqueue"] => new WP_Config_Enqueue_Handler;
-    	$this->handlers["theme_support"] => new WP_Config_Theme_Support_Handler;
-    	$this->handlers["meta_tags"] => new WP_Config_Meta_Tag_Handler;
-    	
+        if (class_exists('WP_Config_Enqueue_Handler')) {
+            $this->handlers["enqueue"] = new WP_Config_Enqueue_Handler;
+        }
+        if (class_exists('WP_Config_Theme_Support_Handler')) {
+        	$this->handlers["theme_support"] = new WP_Config_Theme_Support_Handler;
+        }
+        if (class_exists('WP_Config_Meta_Tag_Handler')) {
+        	$this->handlers["meta_tags"] = new WP_Config_Meta_Tag_Handler;
+        }
+
         // Fires to allow handlers to initialize.
     	do_action('wp_config/init_handlers');
     }
 
     /**
-    * Collect Paths or Directories to Search.
+    * Collect valid paths to wp-config.json files and populate $this->paths.
     *
     * @return array $paths The paths found after searching themes and plugins.
     */
@@ -62,8 +68,7 @@ class WP_Config_Manager {
         $filenames = array("wp-config.json");
         $directories = array();
 
-        // Get paths for all filenames in active plugin roots
-        $active_plugins = get_option('active_plugins');
+        //@TODO: Add Active Plugin Paths
 
         if (get_template_directory() != get_stylesheet_directory()) {
             $directories[] = get_template_directory();
@@ -100,6 +105,7 @@ class WP_Config_Manager {
                 if (file_exists($path)) {
             		$contents = file_get_contents($path);
             		$data = json_decode($contents);
+                    $this->datasets[$path] = $data;
 
             		if (isset($data)) {
             			$cache_updated = $this->cache($path, $data);
@@ -110,18 +116,20 @@ class WP_Config_Manager {
 
                     foreach($data as $key => $value) {
                         do_action("wp_config/key", $key);
-            			do_action("wp_config/{$key}", $data, $file);
+
+                        // Fires to allow handlers to listen for the key they need.
+            			do_action("wp_config/{$key}", $data, $path);
             		}
 
             	} else {
-            		// File doesn't exist. @TODO: Report error.
-            		return false;
+            		// File doesn't exist.
+                    // @TODO: Report issue.
             	}
     		}
     	}
     }
 
-    function cache($path, $data)) {
+    function cache($path, $data) {
         return update_option('wp_config/last_json', $data);
     }
 
