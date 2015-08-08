@@ -10,6 +10,7 @@ License: GPL v2 or later
 */
 
 define( 'WP_CONFIG_API_DIR', dirname( __FILE__ ));
+defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 require_once WP_CONFIG_API_DIR . '/includes/class-wp-config-manager.php';
 require_once WP_CONFIG_API_DIR . '/includes/class-enqueue-handler.php';
@@ -20,15 +21,22 @@ require_once WP_CONFIG_API_DIR . '/includes/class-meta-tags-handler.php';
 function wp_config_init() {
 	$GLOBALS['wp_config_manager'] = new WP_Config_Manager;
 }
-add_action('init', 'wp_config_init');
+add_action('plugins_loaded', 'wp_config_init');
+
+
+
 
 // tests
-add_filter('the_content', function() {
+add_filter('the_content', function($content) {
 	global $wp_config_manager;
 
+	ob_start();
 	print "<pre>";
-	print_r($wp_config_manager);
+	
 	print "</pre>";
+	$content = ob_get_clean();
 
+
+	return $content;
 });
 ?>

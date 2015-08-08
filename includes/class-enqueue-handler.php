@@ -5,17 +5,16 @@
 class WP_Config_Enqueue_Handler {
 
     function __construct() {
-        //add_action('wp_config/register_styles', array($this, "setup"), 10, 2);
-        //add_action('wp_config/enqueue_styles', array($this, "setup"), 10, 2);
-        //add_action('wp_config/register_scripts', array($this, "setup"), 10, 2);
-        //add_action('wp_config/enqueue_scripts', array($this, "setup"), 10, 2);
+        //add_action('wp_config/register_styles', array($this, "prepare"), 10, 3);
+        //add_action('wp_config/enqueue_styles', array($this, "prepare"), 10, 3);
+        //add_action('wp_config/register_scripts', array($this, "prepare"), 10, 3);
+        //add_action('wp_config/enqueue_scripts', array($this, "prepare"), 10, 3);
+        //add_action('wp_config/editor_styles', array($this, "prepare"), 10, 3);
 
-        //add_action('wp_config/editor_styles', array($this, "enqueue_editor_stylesheets"), 10, 2);
-
-        //add_action('wp_enqueue_scripts', array($this, 'configure'));
+        add_action('wp_enqueue_scripts', array($this, 'configure'));
     }
 
-    function setup($config, $file) {
+    function prepare($config, $file, $key) {
 
         if (!empty($config->register_styles)) {
             foreach($config->register_styles as $handle => $style) {
@@ -39,6 +38,8 @@ class WP_Config_Enqueue_Handler {
         }
 
     }
+
+    function configure() {}
 
     // Enqueue editor stylesheets
     function enqueue_editor_stylesheets($config, $file) {

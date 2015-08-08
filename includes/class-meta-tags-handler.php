@@ -1,25 +1,29 @@
 <?php
+/**
+* Class to handle configuration of the "meta_tag" property in JSON files.
+*/
 class WP_Config_Meta_Tag_Handler {
 
-    public $data = array();
-    public $file = "";
+    public $datasets = array();
 
     function __construct() {
-        add_action('wp_config/meta_tags', array($this, "configure"), 10, 2);
-        add_action('wp_head', array($this, "render"));
+        add_action('wp_config/meta_tags', array($this, "prepare"), 10, 2);
+        add_action('wp_head', array($this, "configure"));
     }
 
     // Meta Tag Handler
-    function configure($data, $file) {
+    function prepare($data, $file) {
 
-        $this->data = $data->meta_tags;
-        $this->file = $file;
+        foreach($data->meta_tags as $key => $tag) {
+            // @TODO: This needs to assign each property individually.
+            $this->datasets[$key] = $tag;
+        }
     }
 
-    function render() {
+    function configure() {
 
         print "\n<!-- Enqueued Meta Tags -->\n";
-        foreach($this->data as $name => $data) {
+        foreach($this->datasets as $name => $data) {
 
             $charset = $http_equiv = $content = null;
 
