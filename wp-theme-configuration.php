@@ -4,7 +4,7 @@ Plugin Name: WP Theme Configuration API
 Version: 0.1
 Author: Brent Jett
 Author URI: https://about.me/brent.jett
-Description: A fast theme configuration API that looks for a config.json file in specified directories and initializes your WordPress theme.
+Description: A JSON theme configuration API that looks for a wp-config.json file in active theme and plugin directories and configures WordPress.
 Text Domain: wp_config
 License: GPL v2 or later
 */

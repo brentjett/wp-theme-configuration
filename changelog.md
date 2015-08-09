@@ -7,3 +7,8 @@
 * Allow for dashes inside property names instead of underscores to match WP APIs more closely. See spec for syntax details of each feature supported.
 * Added support for arbitrary theme support keys
 * Detects the base directory for scripts and stylesheets based on config file location - NEEDS TESTING.
+
+Next Steps:
+* Update caching to caching individual files separately instead of one big array of file data.
+* PHP Unit testing
+* Support for Sidebars
