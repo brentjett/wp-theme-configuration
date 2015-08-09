@@ -1,9 +1,9 @@
 # Theme Configuration API for WordPress [IN DEVELOPMENT]
 
-## Big Refactor
-This project has just gone through a complete refactor that should make it a lot more robust. The flow of operations is now controlled by one centralized [WP_Config_Manager](includes/class-wp-config-manager.php) object. Feature support is implemented through handler classes. To start with, I have support for theme supports, nav menu locations (both in [WP_Config_Theme_Support_Handler](includes/class-theme-support-handler.php)), Script and Stylesheet enqueuing ([WP_Config_Enqueue_Handler](includes/class-enqueue-handler.php)) and meta tags ([WP_Config_Meta_Tag_Handler](includes/class-meta-tags-handler.php)) See the [Spec doc](docs/spec.md) for an update to the syntax of each feature. All of these features need plenty of testing and unit testing isn't far off.
+## The Big Refactor
+This project has just gone through a complete refactor that should make it a lot more robust. The flow of operations is now controlled by one centralized [WP_Config_Manager](includes/class-wp-config-manager.php) object. Feature support is implemented through handler classes. To start with, I have support for theme supports, nav menu locations (both in [WP_Config_Theme_Support_Handler](includes/class-theme-support-handler.php)), Script and Stylesheet enqueuing ([WP_Config_Enqueue_Handler](includes/class-enqueue-handler.php)) and meta tags ([WP_Config_Meta_Tag_Handler](includes/class-meta-tags-handler.php)). See the [Spec doc](docs/spec.md) for an update to the syntax of each feature. All of these features need plenty of testing and unit testing isn't far off.
 
-Feel free to try the plugin. Just add wp-config.json files to the root of your themes or plugins. If you run into unexpected behavior, describe the situation in a new issue ticket. I'm also happy to hear suggestions how to best streamline the JSON syntax for various current and future features.
+Feel free to try the plugin. Just add wp-config.json files to the root of your themes or plugins. If you run into unexpected behavior, describe the situation in a new ticket. I'm also happy to hear suggestions how to best streamline the JSON syntax for various current and future features.
 
 ## Configuration vs. Programming
 
@@ -11,11 +11,11 @@ Here's the premise: You shouldn't need to write programmatic code to configure a
 
 The plugin detects wp-config.json files with configuration data and passes each section of that data through a series of filters that do the work of configuring WordPress. This means you can simply write JSON to setup your theme supports, enqueue scripts and stylesheets, declare nav menu locations, etc...
 
-See [Spec for support details](docs/spec.md)
+See [Spec](docs/spec.md) for support details
 
 ## Benefits
 A declarative syntax for configuration has several benefits to the developer:
-* It's faster, using fewer characters to convey the same information as its PHP counterpart while offering greater clarity into what all is happening inside a theme or plugin. JSON is extremely human-readable and offers labels for each value where PHP functions do not.
+* It's faster, using fewer characters to convey the same information as its PHP counterpart while offering greater clarity into what all is happening inside a theme or plugin. JSON is very human-readable and offers labels for each value where PHP functions do not.
 * It relieves the burden of needing to understand the WordPress event model. Themers don't need to be aware that stylesheets are enqueued on wp_enqueue_scripts and theme supports are declared after_setup_theme. The API can handle declaring things at the proper event.
 * In addition to being a very human and machine readable format, JSON is also an easily writable format. This enables the potential for config data to be created through a user interface and written to the appropriate place. Writing well-formed PHP files programattically is much more clumsy and prone to hackery.
 * JSON files move with the theme. Unlike information stored in the database (theme_mods, options), config data stored inside the theme itself will travel with that theme (as it should) whenever it is moved (staging to production, downloaded by end user) without having to create an export -> import migration process.
