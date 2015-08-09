@@ -157,12 +157,9 @@ class WP_Config_Manager {
                         do_action("wp_config/keys", $key);
 
                         // Fires to allow handlers to listen for the key they need.
-            			do_action("wp_config/{$key}", $data, $path, $key);
+            			do_action("wp_config/{$key}", $data->{$key}, $path, $key);
             		}
 
-            	} else {
-            		// File doesn't exist.
-                    // @TODO: Report issue.
             	}
     		}
             $this->cache_all();

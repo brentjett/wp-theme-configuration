@@ -6,7 +6,8 @@ add_filter('the_content', function($content) {
 	ob_start();
 	?>
 	<pre>
-    <?php print_r($wp_config_manager->handlers["theme_support"]->theme_supports) ?>
+    <?php print_r($wp_config_manager->handlers["enqueue"]->stylesheets) ?>
+	<?php print_r($wp_config_manager->handlers["enqueue"]->scripts) ?>
 	</pre>
     <style>
     pre {

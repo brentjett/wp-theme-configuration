@@ -46,12 +46,15 @@ class WP_Config_Theme_Support_Handler {
 	}
 
 	/**
-	* Collect and store each file's theme support and nav menu data.
-	*/
+	* Collect and store each file's theme support and nav menu data
+    * @param object containing theme support or nav menu data
+    * @param string path to file containing data
+    * @param string either theme-support or nav-menus
+    */
 	function prepare($data, $path, $key) {
 
 		if ($key == 'theme-support'){
-			foreach($data->{"theme-support"} as $key => $args) {
+			foreach($data as $key => $args) {
 
 				if ($key == 'title_tag' || $key == 'title-tag') {
 					$this->theme_supports['title-tag'] = $args;
@@ -92,8 +95,8 @@ class WP_Config_Theme_Support_Handler {
 		}
 
 		if ($key == 'nav-menus') {
-			if (!empty($data->{"nav-menus"})) {
-				foreach($data->{"nav-menus"} as $handle => $label) {
+			if (!empty($data)) {
+				foreach($data as $handle => $label) {
 					$this->nav_menus[$handle] = $label;
 				}
 			}

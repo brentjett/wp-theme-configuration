@@ -4,50 +4,117 @@
 */
 class WP_Config_Enqueue_Handler {
 
-    function __construct() {
-        //add_action('wp_config/register_styles', array($this, "prepare"), 10, 3);
-        //add_action('wp_config/enqueue_styles', array($this, "prepare"), 10, 3);
-        //add_action('wp_config/register_scripts', array($this, "prepare"), 10, 3);
-        //add_action('wp_config/enqueue_scripts', array($this, "prepare"), 10, 3);
-        //add_action('wp_config/editor_styles', array($this, "prepare"), 10, 3);
+    /**
+    * All collected stylesheets
+    * @var array
+    */
+    public $stylesheets = array();
 
+    /**
+    * All collected scripts
+    * @var array
+    */
+    public $scripts = array();
+
+    /**
+    * Setup actions
+    */
+    function __construct() {
+        add_action('wp_config/stylesheets', array($this, "prepare"), 10, 3);
+        add_action('wp_config/scripts', array($this, "prepare"), 10, 3);
         add_action('wp_enqueue_scripts', array($this, 'configure'));
     }
 
-    function prepare($config, $file, $key) {
+    /**
+	* Collect and store each file's script and stylesheet data
+    * @param object containing data
+    * @param string path to file containing data
+    * @param string property name
+    */
+    function prepare($data, $path, $key) {
 
-        if (!empty($config->register_styles)) {
-            foreach($config->register_styles as $handle => $style) {
-                $this->enqueue('register', 'style', $handle, $style);
+        if ($key == 'stylesheets') {
+            foreach($data as $handle => $stylesheet) {
+                $stylesheet = (array) $stylesheet;
+                $stylesheet['handle'] = $handle;
+                $stylesheet['origin-file'] = $path;
+                $this->stylesheets[$handle] = $stylesheet;
             }
         }
-        if (!empty($config->enqueue_styles)) {
-            foreach($config->enqueue_styles as $handle => $style) {
-                $this->enqueue('enqueue', 'style', $handle, $style);
+        if ($key == 'scripts') {
+            foreach($data as $handle => $script) {
+                $script = (array) $script;
+                $script['handle'] = $handle;
+                $script['origin-file'] = $path;
+                $this->scripts[$handle] = $script;
             }
         }
-        if (!empty($config->register_scripts)) {
-            foreach($config->register_scripts as $handle => $script) {
-                $this->enqueue('register', 'script', $handle, $script);
-            }
-        }
-        if (!empty($config->enqueue_scripts)) {
-            foreach($config->enqueue_scripts as $handle => $script) {
-                $this->enqueue('enqueue', 'script', $handle, $script);
-            }
-        }
-
     }
 
-    function configure() {}
+    /**
+    *
+    */
+    function configure() {
 
-    // Enqueue editor stylesheets
-    function enqueue_editor_stylesheets($config, $file) {
-        $styles = $config->editor_styles;
-        if (!empty($styles)) {
-            foreach($styles as $style) {
-                add_editor_style($style);
+        if (!empty($this->stylesheets)) {
+            foreach($this->stylesheets as $handle => $stylesheet) {
+                if (is_bool($stylesheet) && $stylesheet) {
+                    wp_enqueue_style($handle);
+                } else {
+
+                    $active_callback = $stylesheet['active-callback'];
+                    if (isset($active_callback) && is_callable($active_callback)) {
+                        $active = call_user_func($active_callback);
+                        if (!$active) continue;
+                    }
+
+                    $src = $this->get_uri($stylesheet['path'], $stylesheet['origin-file']);
+                    $dependencies = $stylesheet['dependencies'];
+                    $version = $stylesheet['version'];
+                    $media = $stylesheet['media'];
+                    wp_enqueue_style($handle, $src, $dependencies, $version, $media);
+                }
             }
+        }
+        if (!empty($this->scripts)) {
+            foreach($this->scripts as $handle => $script) {
+                if (is_bool($script) && $script) {
+                    wp_enqueue_script($handle);
+                } else {
+
+                    $active_callback = $script['active-callback'];
+                    if (isset($active_callback) && is_callable($active_callback)) {
+                        $active = call_user_func($active_callback);
+                        if (!$active) continue;
+                    }
+
+                    $src = $this->get_uri($script['path'], $script['origin-file']);
+                    $dependencies = $script['dependencies'];
+                    $version = $script['version'];
+                    $in_footer = $script['in-footer'];
+                    wp_enqueue_script($handle, $src, $dependences, $version, $in_footer);
+                }
+            }
+        }
+    }
+
+    /**
+    * Determine uri for script or stylesheet based on originating directory.
+    */
+    function get_uri($path, $origin) {
+        if ($this->is_path_external($path)) {
+            return $path;
+        } else {
+            if (dirname($origin) == get_template_directory()) {
+                return get_template_directory_uri() . '/' . $path;
+            }
+            if (dirname($origin) == get_stylesheet_directory()) {
+                return get_stylesheet_uri() . '/' . $path;
+            }
+            if ($path = plugins_url($path, $origin)) {
+                return $path;
+            }
+            return $path;
         }
     }
 
@@ -58,6 +125,19 @@ class WP_Config_Enqueue_Handler {
             // Scheme supports http or https, not //
         }
         return false;
+    }
+
+
+
+
+    // Enqueue editor stylesheets
+    function enqueue_editor_stylesheets($config, $file) {
+        $styles = $config->editor_styles;
+        if (!empty($styles)) {
+            foreach($styles as $style) {
+                add_editor_style($style);
+            }
+        }
     }
 
     function enqueue($action = "enqueue", $type = 'style', $handle, $data = null) {
