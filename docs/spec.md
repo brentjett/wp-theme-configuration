@@ -26,7 +26,19 @@ Anything declared with add_theme_support() can be declared through the JSON API.
 ```
 I'm making every effort to have this syntax match the add_theme_support arguments exactly. See the [theme support syntax reference](theme-support.md) for full details.
 
-### Stylesheets & Scripts (Testing)
+### Nav Menu Locations
+Adding nav menu locations is very simple. The key is the menu handle and the value is the label, just like the locations array passed to [register_nav_menus()](https://codex.wordpress.org/Function_Reference/register_nav_menus).
+
+```json
+{
+    "nav-menus" : {
+        "header" : "Header Menu",
+        "footer" : "Footer Menu"
+    }
+}
+```
+
+### Stylesheets & Scripts
 Stylesheets and scripts can be enqueued using the API. This matches very closely to the [wp_enqueue_script()](https://codex.wordpress.org/Function_Reference/wp_enqueue_script) and [wp_enqueue_style()](https://codex.wordpress.org/Function_Reference/wp_enqueue_style) functions. The ability to simply register a library without enqueuing it, as well as adding a stylesheet to the editor is coming.
 
 ```json
@@ -54,19 +66,7 @@ Stylesheets and scripts can be enqueued using the API. This matches very closely
 }
 ```
 
-### Nav Menu Locations (Supported)
-Adding nav menu locations is very simple. The key is the menu handle and the value is the label, just like the locations array passed to [register_nav_menus()](https://codex.wordpress.org/Function_Reference/register_nav_menus).
-
-```json
-{
-    "nav-menus" : {
-        "header" : "Header Menu",
-        "footer" : "Footer Menu"
-    }
-}
-```
-
-### Sidebars (Planned)
+### Sidebars
 Sidebars can be declared exactly like the array passed to [register_sidebar()](https://codex.wordpress.org/Function_Reference/register_sidebar) inside the "sidebars" key.
 ```json
 {
@@ -82,12 +82,13 @@ Sidebars can be declared exactly like the array passed to [register_sidebar()](h
             "after_title" : "</h2>"
         },
         "blog-sidebar" : {
-            "name" : "Blog Sidebar",
-            "id" : "blog-sidebar"
+            "name" : "Blog Sidebar"
         }
     }
 }
 ```
+
+## Planned Features
 
 ### Custom Post Types & Taxonomies (Planned)
 Custom post types are two of the more complex objects to declare in WordPress. The JSON API will attempt to be as faithful to the existing API as possible to avoid confusion.
