@@ -38,8 +38,8 @@ class WP_Config_Theme_Support_Handler {
 		);
 
 		// Collect data
-		add_action('wp_config/theme_support', array($this, 'prepare'), 10, 3);
-		add_action('wp_config/nav_menus', array($this, 'prepare'), 10, 3);
+		add_action('wp_config/theme-support', array($this, 'prepare'), 10, 3);
+		add_action('wp_config/nav-menus', array($this, 'prepare'), 10, 3);
 
 		// Configure
 		add_action('after_setup_theme', array($this, "configure"));
@@ -50,8 +50,8 @@ class WP_Config_Theme_Support_Handler {
 	*/
 	function prepare($data, $path, $key) {
 
-		if ($key == 'theme_support'){
-			foreach($data->theme_support as $key => $args) {
+		if ($key == 'theme-support'){
+			foreach($data->{"theme-support"} as $key => $args) {
 
 				if ($key == 'title_tag' || $key == 'title-tag') {
 					$this->theme_supports['title-tag'] = $args;
@@ -91,9 +91,9 @@ class WP_Config_Theme_Support_Handler {
 			}
 		}
 
-		if ($key == 'nav_menus') {
-			if (!empty($data->nav_menus)) {
-				foreach($data->nav_menus as $handle => $label) {
+		if ($key == 'nav-menus') {
+			if (!empty($data->{"nav-menus"})) {
+				foreach($data->{"nav-menus"} as $handle => $label) {
 					$this->nav_menus[$handle] = $label;
 				}
 			}
