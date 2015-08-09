@@ -1,4 +1,4 @@
-# WP Config API Spec - DRAFT
+# WP Config API
 
 This API identifies wp-config.json files within active themes and plugins and configures their data. The following sections shows the syntax used to configure each of the supported features.
 
@@ -6,7 +6,7 @@ This API identifies wp-config.json files within active themes and plugins and co
 1. There may be multiple config files with a variety of settings inside. Some idea of priority must be established to deal with duplicate settings. Currently the system starts with arbirary files that have been filtered in with wp_config/paths, then proceeds to wp-config.json files in mu-plugins, active plugins, parent theme (if there is one) and finally child/active theme.
 2. Base paths needed to find file references such as stylesheets and scripts should be determined starting with the directory of the config file specifying the setting. Additional lookup paths might be added through a filter in the future.
 
-## API Syntax
+## API Syntax - Draft
 
 ### Theme support
 Anything declared with add_theme_support() can be declared through the JSON API. Each key corresponds to the first argument of [add_theme_support()](https://codex.wordpress.org/Function_Reference/add_theme_support) and, if the value is an array or object, will be passed as the second parameter.
@@ -15,34 +15,12 @@ Anything declared with add_theme_support() can be declared through the JSON API.
 {
     "theme-support" : {
         "title-tag" : true,
-        "html5" : [
-			"comment-list",
-			"comment-form",
-			"search-form",
-			"gallery",
-			"caption"
-		],
+        "html5" : [ "comment-list", "comment-form", "search-form", "gallery", "caption" ],
         "automatic-feed-links" : true,
         "post-thumbnails" : true,
         "post-formats" : ["aside", "gallery", "quote"],
-        "custom-background" : {
-            "default-color" : "red",
-            "default-image" : "",
-            "default-repeat" : "",
-            "default-position-x" : "",
-            "default-attachment" : ""
-        },
-        "custom-header" : {
-            "default-image" : "",
-            "width" : 0,
-            "height" : 0,
-            "flex-height" : false,
-            "flex-width" : false,
-            "uploads" : true,
-            "random-default" : false,
-            "header-text" : true,
-            "default-text-color" : ""
-        }
+        "custom-background" : {},
+        "custom-header" : {}
     }
 }
 ```
