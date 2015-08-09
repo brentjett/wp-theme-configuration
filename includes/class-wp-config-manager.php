@@ -67,6 +67,9 @@ class WP_Config_Manager {
         if (class_exists('WP_Config_Theme_Support_Handler')) {
         	$this->handlers["theme_support"] = new WP_Config_Theme_Support_Handler;
         }
+        if (class_exists('WP_Config_Sidebars_Handler')) {
+        	$this->handlers["sidebars"] = new WP_Config_Sidebars_Handler;
+        }
         if (class_exists('WP_Config_Meta_Tag_Handler')) {
         	$this->handlers["meta_tags"] = new WP_Config_Meta_Tag_Handler;
         }

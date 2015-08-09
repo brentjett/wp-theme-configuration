@@ -1,27 +1,15 @@
 # WP Config API Spec - DRAFT
 
-The API is designed to intake one or more JSON files and process their contents. The process is divided into 3 main parts:
-* Locating the files
-* Importing each file's data & handling misformatted data (fallback to cached last successful import)
-* Loop over contents and allow filters to handle configuration.
+This API identifies wp-config.json files within active themes and plugins and configures their data. The following sections shows the syntax used to configure each of the supported features.
 
-## Benefits
-A declarative syntax for configuration has several benefits to the themer:
-* Offers a clear way to see exactly what is taking place inside a theme. The more information stored inside a config file, the better understanding someone can have when approaching a theme they've never worked with.
-* Relieves the burden of needing to understand the WordPress event model. Themers no longer need to be aware that stylesheets are enqueued on wp_enqueue_scripts and theme supports are declared inside after_setup_theme. The API can handle declaring things at the proper event.
-* In addition to being a very human and machine readable format, JSON is also an easily writable format. This enables config data to be created through a user interface and written to the appropriate place. Writing well-formed PHP files is a lot more clumsy and prone to hackery.
-* JSON files move with the theme. Unlike information stored in the database (theme_mods, options), config data stored inside the theme itself will travel with that theme whenever it is moved (staging to production, downloaded by end user) without having to create an export -> import migration process.
-
-
-## Premises
+## Assumptions
 1. There may be multiple config files with a variety of settings inside. Some idea of priority must be established to deal with duplicate settings. Currently the system starts with arbirary files that have been filtered in with wp_config/paths, then proceeds to wp-config.json files in mu-plugins, active plugins, parent theme (if there is one) and finally child/active theme.
 2. Base paths needed to find file references such as stylesheets and scripts should be determined starting with the directory of the config file specifying the setting. Additional lookup paths might be added through a filter in the future.
 
-
 ## API Syntax
 
-### [Updated Syntax] Theme supports (Testing)
-Anything declared with add_theme_support() can be added through the API. Each item should match the internal theme support spec (ex: the html5 property expects an array of components to support html5 output on).
+### Theme support
+Anything declared with add_theme_support() can be declared through the JSON API. Each key corresponds to the first argument of [add_theme_support()](https://codex.wordpress.org/Function_Reference/add_theme_support) and, if the value is an array or object, will be passed as the second parameter.
 
 ```json
 {
@@ -58,7 +46,7 @@ Anything declared with add_theme_support() can be added through the API. Each it
     }
 }
 ```
-I'm making every effort to have this syntax match the add_theme_support arguments exactly. See [function reference](https://codex.wordpress.org/Function_Reference/add_theme_support) for full details.
+I'm making every effort to have this syntax match the add_theme_support arguments exactly. See the [theme support syntax reference](theme-support.md) for full details.
 
 ### Stylesheets & Scripts (Testing)
 Stylesheets and scripts can be enqueued using the API. This matches very closely to the [wp_enqueue_script()](https://codex.wordpress.org/Function_Reference/wp_enqueue_script) and [wp_enqueue_style()](https://codex.wordpress.org/Function_Reference/wp_enqueue_style) functions. The ability to simply register a library without enqueuing it, as well as adding a stylesheet to the editor is coming.

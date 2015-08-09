@@ -1,13 +1,22 @@
 <?php
 // tests
+
+/*
+Notes: Script contexts
+- wp_enqueue_scripts - frontside
+- admin_enqueue_scripts - admin
+- login_enqueue_scripts - login screen
+- customize_controls_enqueue_scripts - Customizer sidebar
+- customize_preview_init - Customizer preview area
+*/
+
 add_filter('the_content', function($content) {
 	global $wp_config_manager;
 
 	ob_start();
 	?>
 	<pre>
-    <?php print_r($wp_config_manager->handlers["enqueue"]->stylesheets) ?>
-	<?php print_r($wp_config_manager->handlers["enqueue"]->scripts) ?>
+    <?php print_r($wp_config_manager->handlers["sidebars"]) ?>
 	</pre>
     <style>
     pre {
@@ -15,7 +24,8 @@ add_filter('the_content', function($content) {
     }
     </style>
 	<?php
-    print_theme_supports_table();
+    //print_theme_supports_table();
+	dynamic_sidebar('default');
 	$content = ob_get_clean();
 	return $content;
 });

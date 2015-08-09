@@ -15,6 +15,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 require_once WP_CONFIG_API_DIR . '/includes/class-wp-config-manager.php';
 require_once WP_CONFIG_API_DIR . '/includes/class-enqueue-handler.php';
 require_once WP_CONFIG_API_DIR . '/includes/class-theme-support-handler.php';
+require_once WP_CONFIG_API_DIR . '/includes/class-sidebars-handler.php';
 require_once WP_CONFIG_API_DIR . '/includes/class-meta-tags-handler.php';
 
 // On Init, Setup Manager Object.
