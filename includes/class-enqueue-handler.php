@@ -52,7 +52,7 @@ class WP_Config_Enqueue_Handler {
     }
 
     /**
-    *
+    * Enqueue scripts and stylesheets on wp_enqueue_scripts
     */
     function configure() {
 
@@ -100,6 +100,8 @@ class WP_Config_Enqueue_Handler {
 
     /**
     * Determine uri for script or stylesheet based on originating directory.
+    * @param string relative path to the file
+    * @param string absolute path to the json file that declares the script or stylesheet
     */
     function get_uri($path, $origin) {
         if ($this->is_path_external($path)) {
@@ -118,6 +120,10 @@ class WP_Config_Enqueue_Handler {
         }
     }
 
+    /**
+    * Test if a path is an external url
+    * @param string path
+    */
     function is_path_external($path) {
         $path_data = parse_url($path);
         if (isset($path_data['scheme'])) {
@@ -125,79 +131,6 @@ class WP_Config_Enqueue_Handler {
             // Scheme supports http or https, not //
         }
         return false;
-    }
-
-
-
-
-    // Enqueue editor stylesheets
-    function enqueue_editor_stylesheets($config, $file) {
-        $styles = $config->editor_styles;
-        if (!empty($styles)) {
-            foreach($styles as $style) {
-                add_editor_style($style);
-            }
-        }
-    }
-
-    function enqueue($action = "enqueue", $type = 'style', $handle, $data = null) {
-
-        // run conditional callback
-        if (!empty($data->active_callback)) {
-
-            $fn = array_shift($data->active_callback);
-            if (is_callable($fn)) {
-                $active = call_user_func_array($fn, $data->active_callback);
-                if (!$active) return;
-            }
-        }
-
-        if (!$path = $data->path) return;
-
-        if (!wp_config_path_is_external($data->path)) {
-
-            $path = get_stylesheet_directory_uri() . '/' . $data->path;
-
-            if (file_exists(get_stylesheet_directory_uri() . '/' . $data->path)) {
-                $path = get_stylesheet_directory_uri() . '/' . $data->path;
-
-            } else if (file_exists(get_template_directory_uri() . '/' . $data->path)) {
-                // check parent theme
-                $path = get_template_directory_uri() . '/' . $data->path;
-
-            }
-        }
-
-        if (!isset($data->dependancies)) {
-            $dependancies = array();
-        } else {
-            $dependancies = $data->dependancies;
-        }
-
-        if (isset($data->version)) {
-            $version = $data->version;
-        } else {
-            $version = false;
-        }
-
-        if ($type == 'style') {
-            if (isset($data->media)) {
-                $media_footer = $data->media;
-            } else {
-                $media_footer = false;
-            }
-        } else {
-            if (isset($data->in_footer)) {
-                $media_footer = $data->in_footer;
-            } else {
-                $media_footer = false;
-            }
-        }
-
-        $function_name = "wp_" . $action . "_" . $type;
-        if (is_callable($function_name)) {
-            call_user_func($function_name, $handle, $path, $dependancies, $version, $media_footer);
-        }
     }
 }
 ?>

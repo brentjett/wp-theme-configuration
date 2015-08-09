@@ -14,19 +14,19 @@ A declarative syntax for configuration has several benefits to the themer:
 
 
 ## Premises
-1. There may be multiple config files with a variety of settings inside. Some idea of priority must be established to deal with duplicate settings.
-2. Base paths needed to find file references such as stylesheets and scripts should be determined starting with the directory of the config file specifying the setting. Additional lookup paths might be added through a filter.
+1. There may be multiple config files with a variety of settings inside. Some idea of priority must be established to deal with duplicate settings. Currently the system starts with arbirary files that have been filtered in with wp_config/paths, then proceeds to wp-config.json files in mu-plugins, active plugins, parent theme (if there is one) and finally child/active theme.
+2. Base paths needed to find file references such as stylesheets and scripts should be determined starting with the directory of the config file specifying the setting. Additional lookup paths might be added through a filter in the future.
 
 
 ## API Syntax
 
-### Theme supports (Testing)
-Anything declared with add_theme_support() can be added through the API. Custom/Non-standard support options have not yet been added. Apart from using underscores instead of dashes (for the sake of PHP properties later) each item should match the internal theme support spec (ex: the html5 property expects an array of components to support html5 output on).
+### [Updated Syntax] Theme supports (Testing)
+Anything declared with add_theme_support() can be added through the API. Each item should match the internal theme support spec (ex: the html5 property expects an array of components to support html5 output on).
 
 ```json
 {
-    "theme_support" : {
-        "title_tag" : true,
+    "theme-support" : {
+        "title-tag" : true,
         "html5" : [
 			"comment-list",
 			"comment-form",
@@ -34,52 +34,66 @@ Anything declared with add_theme_support() can be added through the API. Custom/
 			"gallery",
 			"caption"
 		],
-        "automatic_feed_links" : true,
-        "post_thumbnails" : true
+        "automatic-feed-links" : true,
+        "post-thumbnails" : true,
+        "post-formats" : ["aside", "gallery", "quote"],
+        "custom-background" : {
+            "default-color" : "red",
+            "default-image" : "",
+            "default-repeat" : "",
+            "default-position-x" : "",
+            "default-attachment" : ""
+        },
+        "custom-header" : {
+            "default-image" : "",
+            "width" : 0,
+            "height" : 0,
+            "flex-height" : false,
+            "flex-width" : false,
+            "uploads" : true,
+            "random-default" : false,
+            "header-text" : true,
+            "default-text-color" : ""
+        }
     }
 }
 ```
+I'm making every effort to have this syntax match the add_theme_support arguments exactly. See [function reference](https://codex.wordpress.org/Function_Reference/add_theme_support) for full details.
 
 ### Stylesheets & Scripts (Testing)
-Stylesheets and scripts can be registered and/or enqueued using the API. This matches very closely to the [wp_enqueue_script()](https://codex.wordpress.org/Function_Reference/wp_enqueue_script) and [wp_enqueue_style()](https://codex.wordpress.org/Function_Reference/wp_enqueue_style) functions.
+Stylesheets and scripts can be enqueued using the API. This matches very closely to the [wp_enqueue_script()](https://codex.wordpress.org/Function_Reference/wp_enqueue_script) and [wp_enqueue_style()](https://codex.wordpress.org/Function_Reference/wp_enqueue_style) functions. The ability to simply register a library without enqueuing it, as well as adding a stylesheet to the editor is coming.
 
 ```json
 {
-    "enqueue_styles" : {
+    "stylesheets" : {
         "main" : {
             "path" : "style.css",
             "dependencies" : ["dashicons"],
             "version" : false,
-            "media" : "screen"
+            "media" : "screen",
+            "active_callback" : "is_front_page"
         },
         "homepage" : {
             "path" : "css/home.css",
             "active_callback" : "is_front_page"
         }
     },
-    "register_styles" : {},
-    "enqueue_scripts" : {
+    "scripts" : {
         "app" : {
             "path" : "js/app.js",
             "dependencies" : ["jquery"],
             "in_footer" : false
         }
-    },
-    "register_scripts" : {},
-    "editor_styles" : {
-        "content" : {
-            "path" : "css/content.css"
-        }
     }
 }
 ```
 
-### Nav Menu Locations (Testing)
+### Nav Menu Locations (Supported)
 Adding nav menu locations is very simple. The key is the menu handle and the value is the label, just like the locations array passed to [register_nav_menus()](https://codex.wordpress.org/Function_Reference/register_nav_menus).
 
 ```json
 {
-    "nav_menus" : {
+    "nav-menus" : {
         "header" : "Header Menu",
         "footer" : "Footer Menu"
     }
