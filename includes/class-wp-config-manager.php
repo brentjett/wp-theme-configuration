@@ -51,8 +51,8 @@ class WP_Config_Manager {
     */
     function __construct() {
         $this->init_handlers();
-        add_action('init', array($this, "collect_paths"));
-        add_action('wp_config/configure', array($this, "configure"));
+        $this->collect_paths();
+        $this->configure();
         add_action('admin_notices', array($this, 'print_admin_notices'));
     }
 
@@ -71,7 +71,7 @@ class WP_Config_Manager {
         	$this->handlers["meta_tags"] = new WP_Config_Meta_Tag_Handler;
         }
 
-        // Fires to allow handlers to initialize.
+        // Fires to allow external handlers to initialize.
     	do_action('wp_config/init_handlers');
     }
 
@@ -116,10 +116,9 @@ class WP_Config_Manager {
         $pattern = "$dir_pattern/$filenames_pattern";
         $paths = glob($pattern, GLOB_BRACE | GLOB_NOSORT);
         $additional_paths = apply_filters('wp_config/paths', array());
-        $paths = array_merge($paths, $additional_paths);
+        $paths = array_merge($additional_paths, $paths);
 
         $this->paths = $paths;
-        do_action('wp_config/configure');
     }
 
     /**
@@ -141,22 +140,17 @@ class WP_Config_Manager {
                         $data = $this->last_datasets[$path];
                         // Log that there was an error with this file
                         $this->error_log[] = array(
-                            "message" => __('Import Error', 'wp_config'),
+                            "message" => __('Import Error, Reverting to cache', 'wp_config'),
                             "reference" => $path,
                             "display_in_admin" => true
                         );
                     } else {
-                        // Data could not be retrieved
+                        $this->error_log[] = array(
+                            "message" => __('Import Error, Data could not be retrieved', 'wp_config'),
+                            "reference" => $path,
+                            "display_in_admin" => true
+                        );
                     }
-
-                    /*
-            		if (isset($data)) {
-            			$cache_updated = $this->cache($path, $data);
-            		} else {
-            			// json couldn't decode. check the cache
-            			$data = $this->get_cache($path);
-            		}
-                    */
 
                     foreach($data as $key => $value) {
                         // This is just a debug point to see what keys are coming in.
@@ -175,16 +169,8 @@ class WP_Config_Manager {
     	}
     }
 
-    function cache($path, $data) {
-        return update_option('wp_config/last_json', $data);
-    }
-
     function cache_all() {
         return set_transient('wp_config/last_all_json', $this->datasets, $this->cache_duration);
-    }
-
-    function get_last_cache($path) {
-        return get_option('wp_config/last_json');
     }
 
     function format_plugin_path($path) {

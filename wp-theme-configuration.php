@@ -17,26 +17,11 @@ require_once WP_CONFIG_API_DIR . '/includes/class-enqueue-handler.php';
 require_once WP_CONFIG_API_DIR . '/includes/class-theme-support-handler.php';
 require_once WP_CONFIG_API_DIR . '/includes/class-meta-tags-handler.php';
 
+require_once WP_CONFIG_API_DIR . '/includes/debug.php';
+
 // On Init, Setup Manager Object.
 function wp_config_init() {
 	$GLOBALS['wp_config_manager'] = new WP_Config_Manager;
 }
 add_action('plugins_loaded', 'wp_config_init');
-
-
-
-
-// tests
-add_filter('the_content', function($content) {
-	global $wp_config_manager;
-
-	ob_start();
-	print "<pre>";
-	
-	print "</pre>";
-	$content = ob_get_clean();
-
-
-	return $content;
-});
 ?>
