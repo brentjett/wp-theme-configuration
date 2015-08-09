@@ -1,7 +1,14 @@
 # Theme Configuration API for WordPress
 
 ## The Big Refactor
-This project has just gone through a complete refactor that should make it a lot more robust. The flow of operations is now controlled by one centralized [WP_Config_Manager](includes/class-wp-config-manager.php) object. Feature support is implemented through handler classes. To start with, I have support for theme supports, nav menu locations (both in [WP_Config_Theme_Support_Handler](includes/class-theme-support-handler.php)), Script and Stylesheet enqueuing ([WP_Config_Enqueue_Handler](includes/class-enqueue-handler.php)) and meta tags ([WP_Config_Meta_Tag_Handler](includes/class-meta-tags-handler.php)). See the [Spec doc](docs/spec.md) for an update to the syntax of each feature. All of these features need plenty of testing and unit testing isn't far off.
+This project has just gone through a complete refactor that should make it a lot more robust. The flow of operations is now controlled by one centralized [WP_Config_Manager](includes/class-wp-config-manager.php) object. Feature support is implemented through handler classes. The API currently supports:
+* Theme supports ([WP_Config_Theme_Support_Handler](includes/class-theme-support-handler.php))
+* Nav Menu Locations ([WP_Config_Theme_Support_Handler](includes/class-theme-support-handler.php))
+* Sidebars and Widgets ([WP_Config_Sidebars_Handler](includes/class-sidebars-handler.php))
+* Script and Stylesheet enqueuing ([WP_Config_Enqueue_Handler](includes/class-enqueue-handler.php))
+* Meta Tags ([WP_Config_Meta_Tag_Handler](includes/class-meta-tags-handler.php))
+
+See the [Spec doc](docs/spec.md) for an update to the syntax of each feature. All of these features need plenty of testing and unit testing isn't far off.
 
 Feel free to try the plugin. Just add wp-config.json files to the root of your themes or plugins. If you run into unexpected behavior, describe the situation in a new ticket. I'm also happy to hear suggestions how to best streamline the JSON syntax for various current and future features.
 
